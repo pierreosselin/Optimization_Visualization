@@ -25,7 +25,7 @@ differentiate(arr) {
 }
 
   one_step(){
-    var gradient = this.differentiate(this.x);
+    const gradient = this.differentiate(this.x);
     var norm = 0;
     for (var i = 0, len = gradient.length; i < len; i++) {
         this.x[i] = this.x[i] - this.delta * gradient[i];
