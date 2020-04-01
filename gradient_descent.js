@@ -5,7 +5,7 @@ const eps = 0.1;
 
 const objective = x => x.reduce((acc, value) => (acc + value**2), 0);
 
-class gradient_descent {
+class GradientDescent {
   constructor(h, objective, x_ini){
     this.h = h;
     this.objective = objective;
