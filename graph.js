@@ -12,7 +12,6 @@ const y = d3.scaleLinear()
     .range([height - margin.bottom, margin.top]);
 
 const line = d3.line()
-    .defined(_ => true)
     .x(({ abs }) => x(abs))
     .y(({ ord }) => y(ord));
 
@@ -21,26 +20,16 @@ const svg = d3.select('#svg1')
 
 svg.append("path")
     .datum(data)
-    .attr("fill", "none")
     .attr("stroke", "steelblue")
-    .attr("stroke-width", 1.5)
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
     .attr("d", line);
 
 const xAxis = g => g
     .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
+    .call(d3.axisBottom(x));
 
 const yAxis = g => g
     .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y))
-    .call(g => g.select(".domain").remove())
-    .call(g => g.select(".tick:last-of-type text").clone()
-        .attr("x", 3)
-        .attr("text-anchor", "start")
-        .attr("font-weight", "bold")
-        .text(data.y));
+    .call(d3.axisLeft(y));
 
 svg.append("g")
     .call(xAxis);
