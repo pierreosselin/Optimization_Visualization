@@ -2,15 +2,16 @@ console.log("Gradient Descent Algorithm");
 const h = 0.01;
 const x = [1,2];
 const eps = 0.1;
+const nlim = 20;
 
 const objective = x => x.reduce((acc, value) => (acc + value**2), 0);
 
 class GradientDescent {
-  constructor(h, objective, x_ini){
+  constructor(objective, h = 0.01, x_ini = [1,2], delta = 0.1){
     this.h = h;
     this.objective = objective;
     this.x = x_ini;
-    this.delta = 0.1;
+    this.delta = delta;
   }
 
 differentiate(arr) {
@@ -34,14 +35,16 @@ differentiate(arr) {
     return norm
   }
 
-  optimize(eps){
+  optimize(eps, nlim){
     var norm = 0;
+    const list_x = [this.x.map(el => el)];
+    var steps = 0;
     do {
-      norm = (this.one_step())**(1/2)
-      console.log("Norm:", norm, " State:", this.x);
-    } while (norm > eps);
+      norm = (this.one_step())**(1/2);
+      steps = steps + 1;
+      list_x.push(this.x.map(el => el))
+      //console.log("Norm:", norm, " State:", this.x);
+    } while (norm > eps && steps < nlim);
+    return list_x
   }
 }
-
-alg = new GradientDescent(h,objective,x)
-alg.optimize(eps)
