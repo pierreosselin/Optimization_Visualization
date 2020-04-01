@@ -1,52 +1,38 @@
+const data = [...Array(100).keys()].map(index => ({ abs: index, ord: index }));
+const width = 500;
+const height = 500;
+const margin = {top: 20, right: 30, bottom: 30, left: 40};
 
-// set the dimensions and margins of the graph
-var margin = {top: 20, right: 30, bottom: 30, left: 40},
-    width = 460 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+const x = d3.scaleLinear()
+    .domain([0, Math.max(...data.map(({abs}) => abs))]).nice()
+    .range([margin.left, width - margin.right]);
 
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+const y = d3.scaleLinear()
+    .domain([0, Math.max(...data.map(({ord}) => ord))]).nice()
+    .range([height - margin.bottom, margin.top]);
 
-// read data
-d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_for_density2d.csv", function(data) {
+const line = d3.line()
+    .x(({ abs }) => x(abs))
+    .y(({ ord }) => y(ord));
 
-  // Add X axis
-  var x = d3.scaleLinear()
-    .domain([5, 20])
-    .range([ 0, width ]);
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
+const svg = d3.select('#svg1')
+    .attr("viewBox", [0, 0, width, height]);
+
+svg.append("path")
+    .datum(data)
+    .attr("stroke", "steelblue")
+    .attr("d", line);
+
+const xAxis = g => g
+    .attr("transform", `translate(0,${height - margin.bottom})`)
     .call(d3.axisBottom(x));
 
-  // Add Y axis
-  var y = d3.scaleLinear()
-    .domain([5, 22])
-    .range([ height, 0 ]);
-  svg.append("g")
+const yAxis = g => g
+    .attr("transform", `translate(${margin.left},0)`)
     .call(d3.axisLeft(y));
 
-  // compute the density data
-  var densityData = d3.contourDensity()
-    .x(function(d) { return x(d.x); })   // x and y = column name in .csv input data
-    .y(function(d) { return y(d.y); })
-    .size([width, height])
-    .bandwidth(20)    // smaller = more precision in lines = more lines
-    (data)
+svg.append("g")
+    .call(xAxis);
 
-  // Add the contour: several "path"
-  svg
-    .selectAll("path")
-    .data(densityData)
-    .enter()
-    .append("path")
-      .attr("d", d3.geoPath())
-      .attr("fill", "none")
-      .attr("stroke", "#69b3a2")
-      .attr("stroke-linejoin", "round")
-})
+svg.append("g")
+    .call(yAxis);

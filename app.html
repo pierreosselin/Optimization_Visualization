@@ -3,17 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <!-- Load d3.js -->
-  <script src="https://d3js.org/d3.v4.js"></script>
-
-  <!-- specific plugin -->
-  <script src="https://d3js.org/d3-contour.v1.min.js"></script>
-
-  <!-- Create a div where the graph will take place -->
-  <div id="my_dataviz"></div>
+  <link rel="stylesheet" type="text/css" href="./graph.css"  />
+  <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
-  <svg id="svg1" style="margin: 0 auto; display: block;"></svg>
+  <svg id="svg1" class="svg-content-responsive" style="margin: 0 auto; display: block;"></svg>
   <script src="graph.js"></script>
+  <script src="gradient_descent.js"></script>
 </body>
 </html>
