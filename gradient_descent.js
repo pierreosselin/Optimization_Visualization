@@ -3,13 +3,7 @@ const h = 0.01;
 const x = [1,2];
 const eps = 0.1;
 
-function objective(arr) {
-    ret= 0;
-    for (var i = 0, len = arr.length; i < len; i++) {
-        ret = ret + arr[i] * arr[i];
-    }
-    return ret;
-}
+const objective = x => x.reduce((acc, value) => (acc + value**2), 0);
 
 class gradient_descent {
   constructor(h, objective, x_ini){
