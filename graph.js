@@ -3,13 +3,13 @@ const width = 500;
 const height = 500;
 const margin = {top: 20, right: 30, bottom: 30, left: 40};
 
-const y = d3.scaleLinear()
-    .domain([0, 101]).nice()
-    .range([0, 400]);
-
 const x = d3.scaleLinear()
-    .domain([0, 101]).nice()
-    .range([0, 400]);
+    .domain([0, Math.max(...data.map(({abs}) => abs))]).nice()
+    .range([margin.left, width - margin.right]);
+
+const y = d3.scaleLinear()
+    .domain([0, Math.max(...data.map(({ord}) => ord))]).nice()
+    .range([height - margin.bottom, margin.top]);
 
 const line = d3.line()
     .defined(_ => true)
