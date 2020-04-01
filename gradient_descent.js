@@ -13,16 +13,15 @@ class GradientDescent {
     this.delta = 0.1;
   }
 
-  differentiate(arr){
-    var gradient = [];
+differentiate(arr) {
     const x_h = arr.map(el => el);
-    for (var i = 0, len = arr.length; i < len; i++) {
-        x_h[i] = arr[i] + this.h;
-        gradient.push((this.objective(x_h) - this.objective(arr))/this.h);
-        x_h[i] = arr[i];
-    }
-    return gradient;
-  }
+    return arr.map((el, i) => {
+        x_h[i] = el + this.h;
+        gradient = (this.objective(x_h) - this.objective(arr))/this.h);
+        x_h[i] = el;
+        return gradient;
+    })
+}
 
   one_step(){
     var gradient = this.differentiate(this.x);
