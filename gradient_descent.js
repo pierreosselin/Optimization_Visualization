@@ -10,17 +10,6 @@ function objective(arr) {
     return ret;
 }
 
-function differentiate(objective, x, h){
-  gradient = [];
-  x_h = x.map(x => x);
-  for (var i = 0, len = x.length; i < len; i++) {
-      x_h[i] = x[i] + h;
-      gradient.push((objective(x_h) - objective(x))/h);
-      x_h[i] = x[i];
-  }
-  return gradient;
-}
-
 
 class gradient_descent {
   constructor(h, objective, x_ini){
@@ -41,7 +30,7 @@ class gradient_descent {
   }
 
   one_step(){
-    var gradient = differentiate(this.x)
+    var gradient = this.differentiate(this.x)
     return gradient
   }
 
