@@ -1,4 +1,4 @@
-const data = [...Array(100).keys()].map(index => ({ abs: index, ord: index }));
+const data = [...Array(100).keys()].map(index => ({ abs: index, ord: index**2 }));
 const width = 500;
 const height = 500;
 const margin = {top: 20, right: 30, bottom: 30, left: 40};
@@ -20,7 +20,7 @@ const svg = d3.select('#svg1')
 
 svg.append("path")
     .datum(data)
-    .attr("stroke", "steelblue")
+    .attr("stroke", "steelblue", fill="none")
     .attr("d", line);
 
 const xAxis = g => g
