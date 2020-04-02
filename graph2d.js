@@ -49,10 +49,22 @@ svg.append('path')
   .attr('stroke', 'black')
   .attr('fill', 'none');
 
-svg.append('path')
+var path = svg.append('path')
   .attr('d', lineFunc(dataOpti))
   .attr('stroke', 'red')
   .attr('fill', 'none');
+
+  // Variable to Hold Total Length
+var totalLength = path.node().getTotalLength();
+
+// Set Properties of Dash Array and Dash Offset and initiate Transition
+path
+	.attr("stroke-dasharray", totalLength + " " + totalLength)
+	.attr("stroke-dashoffset", totalLength)
+  .transition() // Call Transition Method
+	.duration(4000) // Set Duration timing (ms)
+	.ease(d3.easeLinear) // Set Easing option
+	.attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
 
 const xAxis = g => g
     .attr("transform", `translate(0,${height - margin.bottom})`)
