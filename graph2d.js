@@ -5,15 +5,13 @@ const intervalB = -1;
 const intervalU = 1;
 // create data
 //const data = [{x: 0, y: 20}, {x: 150, y: 150}, {x: 300, y: 100}, {x: 450, y: 20}, {x: 600, y: 130}]
-
+var allGroup = ["yellow", "blue", "red", "green", "purple", "black"]
 const data = [...Array(nPoints).keys()].map(index => ({x: (index/(nPoints-1))*(intervalU - intervalB) + intervalB, y: objective2((index/(nPoints-1))*(intervalU - intervalB) + intervalB)}));
 
 // Perform Optimization
 const alg = new GradientDescent(objective, 0.01, [1], 0.9)
 const result = alg.optimize(eps, nlim)
 const dataOpti = result.map(index => ({x: index[0], y: objective(index)}));
-console.log(result);
-console.log(dataOpti);
 
 
 const width = 700;
@@ -27,6 +25,49 @@ const xScale = d3.scaleLinear()
 const yScale = d3.scaleLinear()
     .domain([Math.min(...data.map(({y}) => y)), Math.max(...data.map(({y}) => y))]).nice()
     .range([height - margin.bottom, margin.top]);
+
+
+// Create buttion
+var dropdownButton = d3.select("#dataviz_builtWithD3")
+  .append('select')
+
+// add the options to the button
+dropdownButton // Add a button
+  .selectAll('myOptions') // Next 4 lines add 6 options = 6 colors
+ 	.data(allGroup)
+  .enter()
+	.append('option')
+  .text(function (d) { return d; }) // text showed in the menu
+  .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+
+// Initialize a circle
+var zeCircle = d3.select("#dataviz_builtWithD3")
+  .append("svg")
+  .append("circle")
+    .attr("cx", 100)
+    .attr("cy", 70)
+    .attr("stroke", "black")
+    .style("fill", "yellow")
+    .attr("r", 20)
+
+// A function that update the color of the circle
+function updateChart(mycolor) {
+  zeCircle
+    .transition()
+    .duration(1000)
+    .style("fill", mycolor)
+}
+
+// When the button is changed, run the updateChart function
+dropdownButton.on("change", function(d) {
+
+    // recover the option that has been chosen
+    var selectedOption = d3.select(this).property("value")
+
+    // run the updateChart function with this selected option
+    updateChart(selectedOption)
+})
 
 
 // create svg element:
@@ -57,6 +98,7 @@ var path = svg.append('path')
   // Variable to Hold Total Length
 var totalLength = path.node().getTotalLength();
 
+
 // Set Properties of Dash Array and Dash Offset and initiate Transition
 path
 	.attr("stroke-dasharray", totalLength + " " + totalLength)
@@ -65,6 +107,7 @@ path
 	.duration(4000) // Set Duration timing (ms)
 	.ease(d3.easeLinear) // Set Easing option
 	.attr("stroke-dashoffset", 0); // Set final value of dash-offset for transition
+
 
 const xAxis = g => g
     .attr("transform", `translate(0,${height - margin.bottom})`)
