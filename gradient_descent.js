@@ -35,7 +35,6 @@ class GradientDescent {
       this.path.push(this.x.map(x => x));
       norm = (this.one_step())**(1/2);
       steps = steps + 1;
-      console.log(norm, this.x)
     } while (norm > eps && steps < nlim);
     return this.path;
   }
