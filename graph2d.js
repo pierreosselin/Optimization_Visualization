@@ -1,4 +1,3 @@
-
 const objective2 = x => x**2;
 const nPoints = 100;
 const intervalB = -1;
@@ -8,7 +7,9 @@ const intervalU = 1;
 var allGroup = ["yellow", "blue", "red", "green", "purple", "black"]
 const data = [...Array(nPoints).keys()].map(index => ({x: (index/(nPoints-1))*(intervalU - intervalB) + intervalB, y: objective2((index/(nPoints-1))*(intervalU - intervalB) + intervalB)}));
 
+const objective = ([x]) => x ** 2;
 // Perform Optimization
+const eps = 0.1, nlim = 20;
 const alg = new GradientDescent(objective, 0.01, [1], 0.9)
 const result = alg.optimize(eps, nlim)
 const dataOpti = result.map(index => ({x: index[0], y: objective(index)}));
