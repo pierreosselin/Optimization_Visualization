@@ -4,7 +4,10 @@ const value = (x, y) =>
 const height = 600; // pixels
 const width = 600; // pixels
 
+const thresholds = d3.range(1, 20).map(i => Math.pow(2, i));
+
 const square = (x, y) => x**2 + y**2;
+const inverse = (x, y) => (1/x**2) + (1/y**2);
 
 /**
  * Display a contour plot of a function over a domain.
@@ -15,8 +18,9 @@ const square = (x, y) => x**2 + y**2;
  * @param width - pixels width of the plot.
  * @param height - pixels height of the plot.
  * @param precision - sample every <precision> pixels in xDomain and yDomain.
+ * @param thresholds - list containing threshold values for the colors.
  */
-function contourPlot(svg, f, xDomain, yDomain, width, height, precision) {
+function contourPlot(svg, f, xDomain, yDomain, width, height, precision, thresholds) {
     /**
      * Compute grid with values to plot.
      */
@@ -50,8 +54,6 @@ function contourPlot(svg, f, xDomain, yDomain, width, height, precision) {
         })};
     };
 
-    // TODO customize threshold
-    const thresholds = d3.range(1, 20).map(i => Math.pow(2, i));
     const color = d3.scaleSequentialLog(d3.extent(thresholds), d3.interpolateMagma);
     const contours = d3.contours()
         .size([gridWidth, gridHeight])
@@ -100,4 +102,4 @@ function contourPlot(svg, f, xDomain, yDomain, width, height, precision) {
 
 }
 
-contourPlot(d3.select('#svg1'), value, [-2, 2], [-2, 2], width, height, 4);
+contourPlot(d3.select('#svg1'), inverse, [-2, 2], [-2, 2], width, height, 4, thresholds);
