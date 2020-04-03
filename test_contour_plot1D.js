@@ -3,7 +3,8 @@ function test_square(h, eps, nlim) {
   //(Pre)defined functions
   const square = (x) => x ** 2;
   const pow3 = (x) => x ** 3;
-  const allGroup = ["square", "pow3"]
+  const allGroup = ["square", "pow3"];
+  const objectives = {"square": {obj: square, x_ini: 1.5, delta: 0.8}, "pow3": {obj: pow3, x_ini: 1.5, delta: 0.1}};
 
   // Create basic constituent of the Visualization (Contour Windows and button)
   const contourPlot = new ContourPlot(
@@ -36,30 +37,19 @@ function test_square(h, eps, nlim) {
     .addAxis()
     .addLine(alg.getPath().map(index => [index[0], objective(index)]));
 
-  // When the button for selecting functions is changed, update the visualization
+  // When a button is changed, update the visualization
   function updateFunction(myfunction) {
-    if (myfunction == "square") {
-      objective = square;
-      d3.select("#svg1").selectAll("*").remove();
-      x_ini = [1.5]
-      alg = new GradientDescent(([x]) => objective([x]), h, x_ini, 0.8);
-      alg.optimize(eps, nlim);
-      contourPlot
-        .draw(objective, 4)
-        .addAxis()
-        .addLine(alg.getPath().map(index => [index[0], objective(index)]));
-    } else if (myfunction == "pow3") {
-      objective = pow3;
-      d3.select("#svg1").selectAll("*").remove();
-      x_ini = [1.5]
-      alg = new GradientDescent(([x]) => objective([x]), h, x_ini, 0.1);
-      alg.optimize(eps, nlim);
-      contourPlot
-        .draw(objective, 4)
-        .addAxis()
-        .addLine(alg.getPath().map(index => [index[0], objective(index)]));
-      }
-    }
+    objective = objectives[myfunction].obj;
+    d3.select("#svg1").selectAll("*").remove();
+    x_ini = [objectives[myfunction].x_ini]
+    alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta);
+    alg.optimize(eps, nlim);
+    contourPlot
+      .draw(objective, 4)
+      .addAxis()
+      .addLine(alg.getPath().map(index => [index[0], objective(index)]));
+  }
+
   function changeXini() {
     x_ini = [this.value];
     d3.select("#path").remove();
@@ -69,7 +59,6 @@ function test_square(h, eps, nlim) {
     contourPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
-
 
 
   // Activation of the buttons
