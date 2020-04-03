@@ -106,6 +106,7 @@ class ContourPlot {
 
     this.svg.append("path")
       .attr("stroke", "green")
+      .attr('id', 'path')
       .attr("d", line)
       .style("fill","none")
       .attr('marker-start', 'url(#dot)')

@@ -39,5 +39,10 @@ class GradientDescent {
     return this.path;
   }
 
+  setXini([new_var]){
+    this.x = [parseFloat(new_var)];
+    this.path = [];
+  }
+
   getPath = () => this.path;
 }

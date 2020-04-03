@@ -25,44 +25,60 @@ function test_square(h, eps, nlim) {
     .attr("value", function (d) { return d; }) // corresponding value returned by the button
 
   // Definition of all the default variables
-  var x_ini = [1.5]
-  var alg = new GradientDescent(([x]) => square([x]), h, x_ini, 0.8);
+  var x_ini = [1.5];
+  var objective = square;
+  var alg = new GradientDescent(([x]) => objective([x]), h, x_ini, 0.8);
   alg.optimize(eps, nlim);
 
   // Plot Initial Presentation
   contourPlot
-    .draw(square, 4)
+    .draw(objective, 4)
     .addAxis()
-    .addLine(alg.getPath().map(index => [index[0], square(index)]));
+    .addLine(alg.getPath().map(index => [index[0], objective(index)]));
 
   // When the button for selecting functions is changed, update the visualization
-  function updateChart(myfunction) {
+  function updateFunction(myfunction) {
     if (myfunction == "square") {
+      objective = square;
       d3.select("#svg1").selectAll("*").remove();
       x_ini = [1.5]
-      alg = new GradientDescent(([x]) => square([x]), h, x_ini, 0.8);
+      alg = new GradientDescent(([x]) => objective([x]), h, x_ini, 0.8);
       alg.optimize(eps, nlim);
       contourPlot
-        .draw(square, 4)
+        .draw(objective, 4)
         .addAxis()
-        .addLine(alg.getPath().map(index => [index[0], square(index)]));
+        .addLine(alg.getPath().map(index => [index[0], objective(index)]));
     } else if (myfunction == "pow3") {
+      objective = pow3;
       d3.select("#svg1").selectAll("*").remove();
       x_ini = [1.5]
-      alg = new GradientDescent(([x]) => pow3([x]), h, x_ini, 0.1);
+      alg = new GradientDescent(([x]) => objective([x]), h, x_ini, 0.1);
       alg.optimize(eps, nlim);
       contourPlot
-        .draw(pow3, 4)
+        .draw(objective, 4)
         .addAxis()
-        .addLine(alg.getPath().map(index => [index[0], pow3(index)]));
+        .addLine(alg.getPath().map(index => [index[0], objective(index)]));
       }
     }
+  function changeXini() {
+    x_ini = [this.value];
+    d3.select("#path").remove();
+    d3.select("#dot").remove();
+    alg.setXini(x_ini);
+    alg.optimize(eps, nlim);
+    contourPlot
+      .addLine(alg.getPath().map(index => [index[0], objective(index)]));
+  }
 
+
+
+  // Activation of the buttons
   dropdownButton.on("change", function(d) {
       var selectedOption = d3.select(this).property("value");
-      updateChart(selectedOption);
-
+      updateFunction(selectedOption);
   })
+  d3.select("#xini").on("input", changeXini)
+
 }
 
 
