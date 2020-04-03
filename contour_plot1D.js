@@ -43,7 +43,12 @@ class ContourPlot {
     /**
      * Display plot in svg
      */
-     this.svg.append('path')
+     this.svg
+       .attr("viewBox", [0, 0, this.width, this.height])
+       .style("display", "block")
+       .style("margin", "0 -14px")
+       .style("width", "calc(100%)")
+       .append('path')
        .attr('d', curveFunc(data))
        .attr('stroke', 'black')
        .attr('fill', 'none');

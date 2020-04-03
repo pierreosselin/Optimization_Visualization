@@ -1,9 +1,9 @@
 function test_square(h, eps, nlim) {
-  const x = [1];
+  const x = [1.5];
 
   const square = (x) => x ** 2;
 
-  const alg = new GradientDescent(([x]) => square([x]), h, x, 0.1);
+  const alg = new GradientDescent(([x]) => square([x]), h, x, 0.8);
   alg.optimize(eps, nlim);
 
   const contourPlot = new ContourPlot(
