@@ -21,7 +21,6 @@ class ContourPlot {
    * @param thresholds - list containing threshold values for the colors.
    */
   draw(f, precision, thresholds) {
-    this.precision = precision;
     /**
      * Compute grid with values to plot.
      */
