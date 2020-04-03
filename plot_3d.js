@@ -19,8 +19,9 @@ class ContourPlot {
    * @param f - 2 variables function with real values to plot.
    * @param precision - sample every <precision> pixels in xDomain and yDomain.
    * @param thresholds - list containing threshold values for the colors.
+   * @param interpolation - d3 interpolation to use.
    */
-  draw(f, precision, thresholds) {
+  draw(f, precision, thresholds, interpolation=d3.interpolateMagma) {
     /**
      * Compute grid with values to plot.
      */
@@ -52,7 +53,7 @@ class ContourPlot {
       };
     };
 
-    const color = d3.scaleSequentialLog(d3.extent(thresholds), d3.interpolateMagma);
+    const color = d3.scaleSequentialLog(d3.extent(thresholds), interpolation);
     const contours = d3.contours()
       .size([gridWidth, gridHeight])
       .thresholds(thresholds)
