@@ -14,7 +14,7 @@ class GraphPlot {
 
   /**
    * Display a plot of a function over a domain.
-   * @param f - 2 variables function with real values to plot.
+   * @param f - one variable function with real values to plot.
    * @param precision - sample every <precision> pixels in xDomain.
    * @param interpolation - d3 interpolation to use.
    */
