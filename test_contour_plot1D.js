@@ -57,8 +57,8 @@ function test_square(h, eps, nlim) {
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
 
-  function changeXini() {
-    x_ini = [this.value];
+  function changeXini(val) {
+    x_ini = [val];
     d3.select("#path").remove();
     d3.select("#dot").remove();
     alg.setXini(x_ini);
@@ -66,7 +66,7 @@ function test_square(h, eps, nlim) {
     contourPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
-  
+
   function changeStep() {
     d3.select("#path").remove();
     d3.select("#dot").remove();
@@ -77,12 +77,23 @@ function test_square(h, eps, nlim) {
   }
 
   // Activation of the buttons
+  //Update the function
   dropdownButtonFunction.on("change", function(d) {
       var selectedOption = d3.select(this).property("value");
       updateFunction(selectedOption);
   })
-  d3.select("#xini").on("input", changeXini)
+  //Update the initial point
+  d3.select("#xini").on("input", function() {
+    changeXini(this.value)
+  })
+  //Update the step
   d3.select("#step").on("input", changeStep)
+  // On Click, update the initial point
+  d3.select("#svg1").on("click", function() {
+    const next_x = contourPlot.xScale.invert(d3.mouse(this)[0]);
+    document.getElementById("xini").value = next_x;
+    changeXini(next_x)
+  })
 
 }
 
