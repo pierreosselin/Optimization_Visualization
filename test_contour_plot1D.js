@@ -22,11 +22,11 @@ function test_square(h, eps, nlim) {
   };
 
 
-  var dropdownButtonFunction = d3.select("#dataviz_builtWithD3")
+  var selectFunctionDropdownButton  = d3.select("#dataviz_builtWithD3")
     .append('select')
 
   // add the options to the button
-  dropdownButtonFunction // Add a button
+  selectFunctionDropdownButton  // Add a button
     .selectAll('myOptions') // Next 4 lines add 6 options = 6 colors
    	.data(allGroup)
     .enter()
@@ -87,7 +87,7 @@ function test_square(h, eps, nlim) {
 
   // Activation of the buttons
   //Update the function
-  dropdownButtonFunction.on("change", function(d) {
+  selectFunctionDropdownButton .on("change", function(d) {
       var selectedOption = d3.select(this).property("value");
       updateFunction(selectedOption);
   })
