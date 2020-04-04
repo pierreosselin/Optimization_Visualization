@@ -1,7 +1,7 @@
 class GraphPlot {
   /**
    * @param svg - svg object on which to draw the plot.
-   * @param xDomain - 2 elements list, domain of the first variable of f for the plot.
+   * @param xDomain - 2 elements list, domain of the variable of f for the plot.
    * @param width - pixels width of the plot.
    * @param height - pixels height of the plot.
    */
