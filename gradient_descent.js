@@ -9,12 +9,15 @@ class GradientDescent {
   }
 
   differentiate(arr) {
-    const x_h = arr.map(el => el);
+    const x_hP = arr.map(el => el);
+    const x_hM = arr.map(el => el);
     var gradient = 0;
     return arr.map((el, i) => {
-      x_h[i] = el + this.h;
-      gradient = ((this.objective(x_h) - this.objective(arr)) / this.h);
-      x_h[i] = el;
+      x_hP[i] = el + this.h;
+      x_hM[i] = el - this.h;
+      gradient = ((this.objective(x_hP) - this.objective(x_hM)) / (2*this.h));
+      x_hP[i] = el;
+      x_hM[i] = el
       return gradient;
     })
   }
