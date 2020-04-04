@@ -45,7 +45,7 @@ function test_square(h, eps, nlim) {
     //Get new data and remove svg elements
     objective = objectives[myfunction].obj;
     d3.select("#svg1").selectAll("*").remove();
-    x_ini = [objectives[myfunction].x_ini];
+    x_ini = objectives[myfunction].x_ini;
 
     // Change default values of the buttons
     document.getElementById("step").value = objectives[myfunction].delta;
