@@ -46,5 +46,5 @@ function test_rosenbrock(h, eps, nlim) {
     .addLine(alg.getPath());
 }
 
-test_square(0.01, 0.1, 20);
-// test_rosenbrock(0.01, 0.1, 100);
+// test_square(0.01, 0.1, 20);
+test_rosenbrock(0.01, 0.1, 100);
