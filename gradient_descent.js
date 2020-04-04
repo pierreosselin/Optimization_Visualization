@@ -17,7 +17,7 @@ class GradientDescent {
       x_hM[i] = el - this.h;
       gradient = ((this.objective(x_hP) - this.objective(x_hM)) / (2*this.h));
       x_hP[i] = el;
-      x_hM[i] = el
+      x_hM[i] = el;
       return gradient;
     })
   }
