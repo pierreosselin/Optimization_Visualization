@@ -30,7 +30,7 @@ class ContourPlot {
     const grid = new Array(gridWidth * gridHeight);
     for (let j = 0; j < gridHeight; ++j) {
       for (let i = 0; i < gridWidth; ++i) {
-        grid[j * gridWidth + i] = f(this.xScale.invert(i * precision), this.yScale.invert(j * precision));
+        grid[j * gridWidth + i] = f([this.xScale.invert(i * precision), this.yScale.invert(j * precision)]);
       }
     }
 
@@ -112,7 +112,7 @@ class ContourPlot {
    * @param points - list of points.
    *  Point: [x, y] where x and y are coordinates in xDomain and yDomain.
    */
-  addLine(points) {
+  addLine2(points) {
     const coords = points.map(([x, y]) => [this.xScale(x), this.yScale(y)]);
 
     const transitionDuration = index => Math.round(2000 / index);
@@ -150,6 +150,36 @@ class ContourPlot {
       .attr("transform", `translate(${coords[coords.length - 1][0]}, ${coords[coords.length - 1][1]})`)
       .transition(d3.transition().delay(previousTransitionsDuration(coords.length)))
       .attr('r', 3);
+
+    return this;
+  }
+
+  addLine(points) {
+    const line = d3.line()(points.map(([x, y]) => [this.xScale(x), this.yScale(y)]));
+
+    this.svg
+      .append('defs')
+      .append('marker')
+      .attr('id', 'dot')
+      .attr('viewBox', [0, 0, 20, 20])
+      .attr('refX', 10)
+      .attr('refY', 10)
+      .attr('markerWidth', 10)
+      .attr('markerHeight', 10)
+      .append('circle')
+      .attr('cx', 10)
+      .attr('cy', 10)
+      .attr('r', 5)
+      .style('fill', 'green');
+
+    this.svg.append("path")
+      .attr("stroke", "green")
+      .attr('id', 'path')
+      .attr("d", line)
+      .style("fill","none")
+      .attr('marker-start', 'url(#dot)')
+      .attr('marker-mid', 'url(#dot)')
+      .attr('marker-end', 'url(#dot)');
 
     return this;
   }
