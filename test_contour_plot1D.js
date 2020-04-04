@@ -13,6 +13,15 @@ function test_square(h, eps, nlim) {
     600,
     600,
   );
+  contourPlot.svg
+    .on("mousemove", mouseAction)
+
+  function mouseAction() {
+    //let mousex = d3.mouse(d3.event.target)[0];
+    //console.log(mousex)
+  };
+
+
   var dropdownButtonFunction = d3.select("#dataviz_builtWithD3")
     .append('select')
 
