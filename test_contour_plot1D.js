@@ -7,24 +7,25 @@ function test_square(h, eps, nlim) {
   const objectives = {"square": {obj: square, x_ini: 1.5, delta: 0.8}, "pow3": {obj: pow3, x_ini: 1.5, delta: 0.1}};
 
   // Create basic constituent of the Visualization (Contour Windows and button)
+  // Window for contour
   const graphPlot = new GraphPlot(
     d3.select('#svg1'),
     [-2, 2],
     600,
     600,
   );
+  // Define action when moving mouse
   graphPlot.svg
     .on("mousemove", mouseAction)
 
-  function mouseAction() {
-    //let mousex = d3.mouse(d3.event.target)[0];
-    //console.log(mousex)
-  };
+  // Circle shape for x_ini location
+  var circle_xini =  d3.select('#svg1').append("circle")
+    .attr('r', 4)
+    .style("fill", "black")
 
-
+  // Button for function selection
   var selectFunctionDropdownButton  = d3.select("#dataviz_builtWithD3")
     .append('select')
-
   // add the options to the button
   selectFunctionDropdownButton  // Add a button
     .selectAll('myOptions') // Next 4 lines add 6 options = 6 colors
@@ -84,6 +85,14 @@ function test_square(h, eps, nlim) {
     graphPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
+
+  // Action when moving the mouse
+  function mouseAction() {
+    const mousex = d3.mouse(d3.event.target)[0];
+    circle_xini
+      .attr('cx', mousex)
+      .attr('cy', graphPlot.yScale(objective([graphPlot.xScale.invert(mousex)])))
+  };
 
   // Activation of the buttons
   //Update the function
