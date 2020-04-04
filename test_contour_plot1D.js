@@ -108,4 +108,3 @@ function test_square(h, eps, nlim) {
 
 
 test_square(0.01, 0.1, 20);
-// test_rosenbrock(0.01, 0.1, 100);
