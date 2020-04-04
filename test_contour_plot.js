@@ -66,6 +66,17 @@ function test_square(h, eps, nlim) {
       .addLine(alg.getPath());
   }
 
+  // Update Xini
+  function changeXini([valx, valy]) {
+    x_ini = [valx, valy];
+    d3.select("#path").remove();
+    d3.select("#dot").remove();
+    alg.setXini(x_ini);
+    alg.optimize(eps, nlim);
+    contourPlot
+      .addLine(alg.getPath());
+  }
+
   // Function updating the step
   function onStepChanged() {
     d3.select("#path").remove();
@@ -84,6 +95,10 @@ function test_square(h, eps, nlim) {
   })
   //Update the step
   d3.select("#step").on("input", onStepChanged)
+  // On Click, update the initial point
+  d3.select("#svg1").on("click", function() {
+    changeXini([contourPlot.xScale.invert(d3.mouse(this)[0]), contourPlot.yScale.invert(d3.mouse(this)[1])])
+  })
 }
 
 

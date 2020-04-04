@@ -19,7 +19,8 @@ function test_square(h, eps, nlim) {
     .on("mousemove", mouseAction)
 
   // Circle shape for x_ini location
-  var circle_xini =  d3.select('#svg1').append("circle")
+  var circle_xini = graphPlot.svg
+    .append("circle")
     .attr('r', 4)
     .style("fill", "black")
 
@@ -64,7 +65,16 @@ function test_square(h, eps, nlim) {
     graphPlot
       .draw(objective, 4)
       .addAxis()
-      .addLine(alg.getPath().map(index => [index[0], objective(index)]));
+      .addLine(alg.getPath().map(index => [index[0], objective(index)]))
+
+    // Redefine Mouse Action
+    graphPlot.svg
+      .on("mousemove", mouseAction)
+    // Circle shape for x_ini location
+    circle_xini =  graphPlot.svg
+      .append("circle")
+      .attr('r', 4)
+      .style("fill", "black")
   }
 
   function changeXini(val) {
@@ -105,7 +115,7 @@ function test_square(h, eps, nlim) {
     changeXini(this.value)
   })
   //Update the step
-  d3.select("#step").on("input", onStepChanged)
+  d3.select("#step").on("input", onStepChanged);
   // On Click, update the initial point
   d3.select("#svg1").on("click", function() {
     const next_x = graphPlot.xScale.invert(d3.mouse(this)[0]);
