@@ -88,6 +88,7 @@ class GraphPlot {
    */
   addLine(points) {
     const line = d3.line()(points.map(([x, y]) => [this.xScale(x), this.yScale(y)]));
+    
     this.svg
       .append('defs')
       .append('marker')

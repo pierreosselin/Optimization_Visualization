@@ -66,12 +66,24 @@ function test_square(h, eps, nlim) {
       .addLine(alg.getPath());
   }
 
+  // Function updating the step
+  function onStepChanged() {
+    d3.select("#path").remove();
+    d3.select("#dot").remove();
+    alg.setStep(this.value);
+    alg.optimize(eps, nlim);
+    contourPlot
+      .addLine(alg.getPath());
+  }
+
   // Activation of the buttons
   //Update the function
   selectFunctionDropdownButton.on("change", function(d) {
       var selectedOption = d3.select(this).property("value");
       onFunctionChanged(selectedOption);
   })
+  //Update the step
+  d3.select("#step").on("input", onStepChanged)
 }
 
 
