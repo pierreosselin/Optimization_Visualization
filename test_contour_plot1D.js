@@ -76,7 +76,7 @@ function test_square(h, eps, nlim) {
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
 
-  function changeStep() {
+  function onStepChanged() {
     d3.select("#path").remove();
     d3.select("#dot").remove();
     alg.setStep(this.value);
@@ -96,7 +96,7 @@ function test_square(h, eps, nlim) {
     changeXini(this.value)
   })
   //Update the step
-  d3.select("#step").on("input", changeStep)
+  d3.select("#step").on("input", onStepChanged)
   // On Click, update the initial point
   d3.select("#svg1").on("click", function() {
     const next_x = graphPlot.xScale.invert(d3.mouse(this)[0]);
