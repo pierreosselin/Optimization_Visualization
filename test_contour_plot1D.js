@@ -7,13 +7,13 @@ function test_square(h, eps, nlim) {
   const objectives = {"square": {obj: square, x_ini: 1.5, delta: 0.8}, "pow3": {obj: pow3, x_ini: 1.5, delta: 0.1}};
 
   // Create basic constituent of the Visualization (Contour Windows and button)
-  const contourPlot = new ContourPlot(
+  const graphPlot = new GraphPlot(
     d3.select('#svg1'),
     [-2, 2],
     600,
     600,
   );
-  contourPlot.svg
+  graphPlot.svg
     .on("mousemove", mouseAction)
 
   function mouseAction() {
@@ -41,7 +41,7 @@ function test_square(h, eps, nlim) {
   alg.optimize(eps, nlim);
 
   // Plot Initial Presentation
-  contourPlot
+  graphPlot
     .draw(objective, 4)
     .addAxis()
     .addLine(alg.getPath().map(index => [index[0], objective(index)]));
@@ -60,7 +60,7 @@ function test_square(h, eps, nlim) {
     // Change Alg and make optimizization
     alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta);
     alg.optimize(eps, nlim);
-    contourPlot
+    graphPlot
       .draw(objective, 4)
       .addAxis()
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
@@ -72,7 +72,7 @@ function test_square(h, eps, nlim) {
     d3.select("#dot").remove();
     alg.setXini(x_ini);
     alg.optimize(eps, nlim);
-    contourPlot
+    graphPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
 
@@ -81,7 +81,7 @@ function test_square(h, eps, nlim) {
     d3.select("#dot").remove();
     alg.setStep(this.value);
     alg.optimize(eps, nlim);
-    contourPlot
+    graphPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
 
@@ -99,7 +99,7 @@ function test_square(h, eps, nlim) {
   d3.select("#step").on("input", changeStep)
   // On Click, update the initial point
   d3.select("#svg1").on("click", function() {
-    const next_x = contourPlot.xScale.invert(d3.mouse(this)[0]);
+    const next_x = graphPlot.xScale.invert(d3.mouse(this)[0]);
     document.getElementById("xini").value = next_x;
     changeXini(next_x)
   })

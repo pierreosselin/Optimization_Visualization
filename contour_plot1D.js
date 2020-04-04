@@ -1,4 +1,4 @@
-class ContourPlot {
+class GraphPlot {
   /**
    * @param svg - svg object on which to draw the plot.
    * @param xDomain - 2 elements list, domain of the first variable of f for the plot.
@@ -58,7 +58,7 @@ class ContourPlot {
 
   /**
    * Add axis on the plot based on xDomain and yDomain.
-   * @returns {ContourPlot}
+   * @returns {GraphPlot}
    */
   addAxis() {
     const xAxis = g => g
