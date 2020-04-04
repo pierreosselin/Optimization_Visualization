@@ -13,11 +13,11 @@ function test_square(h, eps, nlim) {
     600,
     600,
   );
-  var dropdownButton = d3.select("#dataviz_builtWithD3")
+  var dropdownButtonFunction = d3.select("#dataviz_builtWithD3")
     .append('select')
 
   // add the options to the button
-  dropdownButton // Add a button
+  dropdownButtonFunction // Add a button
     .selectAll('myOptions') // Next 4 lines add 6 options = 6 colors
    	.data(allGroup)
     .enter()
@@ -59,14 +59,22 @@ function test_square(h, eps, nlim) {
     contourPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
-
+  function changeStep() {
+    d3.select("#path").remove();
+    d3.select("#dot").remove();
+    alg.setStep(this.value);
+    alg.optimize(eps, nlim);
+    contourPlot
+      .addLine(alg.getPath().map(index => [index[0], objective(index)]));
+  }
 
   // Activation of the buttons
-  dropdownButton.on("change", function(d) {
+  dropdownButtonFunction.on("change", function(d) {
       var selectedOption = d3.select(this).property("value");
       updateFunction(selectedOption);
   })
   d3.select("#xini").on("input", changeXini)
+  d3.select("#step").on("input", changeStep)
 
 }
 
