@@ -49,7 +49,6 @@ function test_square(h, eps, nlim) {
 
     // Change default values of the buttons
     document.getElementById("step").value = objectives[myfunction].delta;
-    //document.getElementById("xini").value = objectives[myfunction].x_ini;
 
     // Change Alg and make optimizization
     alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta);
