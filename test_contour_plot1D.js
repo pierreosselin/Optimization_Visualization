@@ -39,9 +39,16 @@ function test_square(h, eps, nlim) {
 
   // When a button is changed, update the visualization
   function updateFunction(myfunction) {
+    //Get new data and remove svg elements
     objective = objectives[myfunction].obj;
     d3.select("#svg1").selectAll("*").remove();
-    x_ini = [objectives[myfunction].x_ini]
+    x_ini = [objectives[myfunction].x_ini];
+
+    // Change default values of the buttons
+    document.getElementById("step").value = objectives[myfunction].delta;
+    document.getElementById("xini").value = objectives[myfunction].x_ini;
+
+    // Change Alg and make optimizization
     alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta);
     alg.optimize(eps, nlim);
     contourPlot
@@ -59,6 +66,7 @@ function test_square(h, eps, nlim) {
     contourPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
   }
+  
   function changeStep() {
     d3.select("#path").remove();
     d3.select("#dot").remove();
