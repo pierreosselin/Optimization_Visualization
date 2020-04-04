@@ -30,7 +30,7 @@ class ContourPlot {
     const grid = new Array(gridWidth * gridHeight);
     for (let j = 0; j < gridHeight; ++j) {
       for (let i = 0; i < gridWidth; ++i) {
-        grid[j * gridWidth + i] = f(this.xScale.invert(i * precision), this.yScale.invert(j * precision));
+        grid[j * gridWidth + i] = f([this.xScale.invert(i * precision), this.yScale.invert(j * precision)]);
       }
     }
 
