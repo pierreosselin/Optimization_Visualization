@@ -47,7 +47,7 @@ function test_square(h, eps, nlim) {
     .addLine(alg.getPath().map(index => [index[0], objective(index)]));
 
   // When a button is changed, update the visualization
-  function updateFunction(myfunction) {
+  function onFunctionChanged(myfunction) {
     //Get new data and remove svg elements
     objective = objectives[myfunction].obj;
     d3.select("#svg1").selectAll("*").remove();
@@ -89,7 +89,7 @@ function test_square(h, eps, nlim) {
   //Update the function
   selectFunctionDropdownButton .on("change", function(d) {
       var selectedOption = d3.select(this).property("value");
-      updateFunction(selectedOption);
+      onFunctionChanged(selectedOption);
   })
   //Update the initial point
   d3.select("#xini").on("input", function() {
