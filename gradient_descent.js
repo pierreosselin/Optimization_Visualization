@@ -114,7 +114,7 @@ class GradientDescentMomentum extends AlgorithmFirstOrder{
   one_step() {
     const gradient = this.differentiate(this.x);
     this.currentgrad = this.currentgrad.map((e,i) => this.momentum * e + this.delta * gradient[i])
-    var norm = 0;
+    let norm = 0;
     for (var i = 0, len = gradient.length; i < len; i++) {
       this.x[i] = this.x[i] - this.currentgrad[i];
       norm = norm + this.currentgrad[i] ** 2
