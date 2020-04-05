@@ -3,12 +3,15 @@ function test_square(h, eps, nlim) {
   //(Pre)defined functions
   const square = (x) => x ** 2;
   const pow3 = (x) => x ** 3;
-  const allGroup = ["square", "pow3"];
-  const objectives = {"square": {obj: square, x_ini: 1.5, delta: 0.8}, "pow3": {obj: pow3, x_ini: 1.5, delta: 0.1}};
+  const sin3 = (x) => -(1.4 -3*x)*Math.sin(18*x)
+  const allGroup = ["square", "pow3", "sin3"];
+  const objectives = {"square": {obj: square, x_ini: 1.5, delta: {value: 0.8, step : 0.05}, xDomain: [-2,2]},
+                      "pow3": {obj: pow3, x_ini: 0.7, delta: {value: 0.1, step : 0.01}, xDomain: [-1,1]},
+                      "sin3": {obj: sin3, x_ini: 1, delta: {value: 0.01, step : 0.001}, xDomain: [0,1.2]}};
 
   // Create basic constituent of the Visualization (Contour Windows and button)
   // Window for contour
-  const graphPlot = new GraphPlot(
+  var graphPlot = new GraphPlot(
     d3.select('#svg1'),
     [-2, 2],
     600,
@@ -56,12 +59,19 @@ function test_square(h, eps, nlim) {
     x_ini = [objectives[myfunction].x_ini];
 
     // Change default values of the buttons
-    document.getElementById("step").value = objectives[myfunction].delta;
+    document.getElementById("step").value = objectives[myfunction].delta.value;
+    document.getElementById("step").step = objectives[myfunction].delta.step;
     document.getElementById("xini").value = objectives[myfunction].x_ini;
 
     // Change Alg and make optimizization
-    alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta);
+    alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta.value);
     alg.optimize(eps, nlim);
+    graphPlot = new GraphPlot(
+      d3.select('#svg1'),
+      objectives[myfunction].xDomain,
+      600,
+      600,
+    );
     graphPlot
       .draw(objective, 4)
       .addAxis()

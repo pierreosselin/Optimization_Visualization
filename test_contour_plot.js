@@ -4,7 +4,9 @@ function test_square(h, eps, nlim) {
   const square = ([x, y]) => x ** 2 + y ** 2 + (x + y) ** 2;
   const rosenbrock = ([x,y]) => (1-x)**2  + 100*(y - x**2)**2 + 1;
   const allGroup = ["square", "rosenbrock"];
-  const objectives = {"square": {obj: square, x_ini: [-30, 175], delta: {value: 0.1, step : 0.01}, xDomain : [-200,200], yDomain : [-200,200], interpolation :d3.interpolateMagma}, "rosenbrock": {obj: rosenbrock, x_ini: [2.5, -1.5], delta:  {value: 0.0001, step : 0.0001}, xDomain : [-2,3], yDomain : [-2,3], interpolation: d3.interpolateYlGnBu}};
+  const objectives = {"square": {obj: square, x_ini: [-30, 175], delta: {value: 0.1, step : 0.01}, xDomain : [-200,200], yDomain : [-200,200], interpolation :d3.interpolateMagma},
+                      "rosenbrock": {obj: rosenbrock, x_ini: [2.5, -1.5], delta:  {value: 0.0001, step : 0.0001}, xDomain : [-2,3], yDomain : [-2,3], interpolation: d3.interpolateYlGnBu}
+                    };
 
   // Create basic constituent of the Visualization (Contour Windows and button)
   // Window for contour
