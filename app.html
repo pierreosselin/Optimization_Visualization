@@ -5,6 +5,14 @@
   <title>Title</title>
   <link rel="stylesheet" type="text/css" href="./graph.css"  />
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="test.js"></script>
+  <!--<script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>-->
+  <!--<script type="text/javascript"> // Can be deleted if latex not used with <p>
+  LatexIT.add('p',true);
+  </script> -->
+  <style>
+    pre .latex { border:10px solid red;}
+  </style>
 </head>
 <body>
 
@@ -18,5 +26,9 @@
   <script src="graph_plot.js"></script>
   <script src="gradient_descent.js"></script>
   <script src="test_graph_plot.js"></script>
+  <div id="documentation" align="center">
+    <p style="color:black;font-size:50px;"> Gradient Descent Algorithm</p>
+    <div lang="latex" style="font-size: 1px;">x_{k + 1} = x_{k} - \alpha_{k} \nabla_{x}f(x_{k})</div>
+  </div>
 </body>
 </html>
