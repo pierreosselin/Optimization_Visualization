@@ -1,4 +1,4 @@
-/** Mother class algorithm must do the following tasks
+/** Abstract class Algorithm is only used to define the following API for implemented algorithms:
 * @method one_step : Perform one step of the algorithm
 * @method optimize : Perform optimization wth given criterion
 * @method get_path : Get the path of the optimization
