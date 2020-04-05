@@ -34,7 +34,7 @@ class GraphPlot {
 
 
     // prepare a helper function
-    var curveFunc = d3.line()
+    let curveFunc = d3.line()
       .curve(d3.curveBasis)              // This is where you define the type of curve. Try curveStep for instance.
       .x(({ x }) => this.xScale(x))
       .y(({ y }) => this.yScale(y));
@@ -88,7 +88,7 @@ class GraphPlot {
    */
   addLine(points) {
     const line = d3.line()(points.map(([x, y]) => [this.xScale(x), this.yScale(y)]));
-    
+
     this.svg
       .append('defs')
       .append('marker')

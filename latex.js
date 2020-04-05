@@ -16,7 +16,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var LatexIT = {
+let LatexIT = {
 	mode : 'gif',
 	imgnum : 0,
 	isFirefox:false,
@@ -28,7 +28,7 @@ var LatexIT = {
     // browser name
 		// svg support in FireFox is not allowing two images to occur currently on the same line.
 
-		var ua = navigator.userAgent.toLowerCase();
+		let ua = navigator.userAgent.toLowerCase();
 		if(ua.indexOf("firefox")!=-1)
 		{
       // this.isFirefox = true;
@@ -61,7 +61,7 @@ var LatexIT = {
 	},
 
 	latex : function(txt) {
-		var html, htmlinline;
+		let html, htmlinline;
 		if(this.isFirefox) {
 		  html=" <object type=\"image/svg+xml\" data=\"http://latex.codecogs.com/"+this.mode+".latex?$2\" class=\"latex\" /> ";
 		  htmlinline=" <object type=\"image/svg+xml\" data=\"http://latex.codecogs.com/"+this.mode+".latex?\\inline $2\" class=\"latex\" /> ";
@@ -81,8 +81,8 @@ var LatexIT = {
 	},
 
 	render : function(tag, latexmode) {
-		var eqn = window.document.getElementsByTagName(tag);
-		for (var i=0; i<eqn.length; i++) {
+		let eqn = window.document.getElementsByTagName(tag);
+		for (let i=0; i<eqn.length; i++) {
 			if(latexmode)
 			  eqn[i].innerHTML = LatexIT.latex(eqn[i].innerHTML);
 			else if (eqn[i].getAttribute("lang") == "latex" || eqn[i].getAttribute("xml:lang") == "latex")

@@ -11,7 +11,7 @@ function test_sgd(h, eps, nlim) {
 
   // Create basic constituent of the Visualization (Contour Windows and button)
   // Window for contour
-  var graphPlot = new GraphPlot(
+  let graphPlot = new GraphPlot(
     d3.select('#svg1'),
     [-2, 2],
     600,
@@ -22,13 +22,13 @@ function test_sgd(h, eps, nlim) {
     .on("mousemove", mouseAction)
 
   // Circle shape for x_ini location
-  var circle_xini = graphPlot.svg
+  let circle_xini = graphPlot.svg
     .append("circle")
     .attr('r', 4)
     .style("fill", "black")
 
   // Button for function selection
-  var selectFunctionDropdownButton  = d3.select("#buttonSpace")
+  let selectFunctionDropdownButton  = d3.select("#buttonSpace")
     .append('select')
   // add the options to the button
   selectFunctionDropdownButton  // Add a button
@@ -40,7 +40,7 @@ function test_sgd(h, eps, nlim) {
     .attr("value", function (d) { return d; }) // corresponding value returned by the button
 
   // Button for algorithm selection
-  var selectAlgorithmDropdownButton  = d3.select("#buttonSpace")
+  let selectAlgorithmDropdownButton  = d3.select("#buttonSpace")
     .append('select')
   // add the options to the button
   selectAlgorithmDropdownButton  // Add a button
@@ -52,10 +52,10 @@ function test_sgd(h, eps, nlim) {
     .attr("value", function (d) { return d; }) // corresponding value returned by the button
 
   // Definition of all the default variables
-  var x_ini = [1.5];
-  var step = 0.8;
-  var objective = square;
-  var alg = new GradientDescent(objective,x_ini, h, 0.8);
+  let x_ini = [1.5];
+  let step = 0.8;
+  let objective = square;
+  let alg = new GradientDescent(objective,x_ini, h, 0.8);
   alg.optimize(eps, nlim);
 
   // Plot Initial Presentation
@@ -145,12 +145,12 @@ function test_sgd(h, eps, nlim) {
   // Activation of the buttons
   //Update the function
   selectFunctionDropdownButton .on("change", function(d) {
-      var selectedOption = d3.select(this).property("value");
+      let selectedOption = d3.select(this).property("value");
       onFunctionChanged(selectedOption);
   })
   //Update the algorithm
   selectAlgorithmDropdownButton .on("change", function(d) {
-      var selectedOption = d3.select(this).property("value");
+      let selectedOption = d3.select(this).property("value");
       onAlgorithmChanged(selectedOption);
   })
   //Update the initial point
