@@ -66,7 +66,9 @@ function test_sgd(h, eps, nlim) {
     document.getElementById("step").step = objectives[myfunction].delta.step;
 
     // Change Alg and make optimizization
-    alg = new GradientDescent(objective, x_ini, h, step);
+    alg.setObj(objective);
+    alg.setStep(step);
+    alg.setXini(x_ini);
     alg.optimize(eps, nlim);
     contourPlot = new ContourPlot(
       d3.select('#svg1'),

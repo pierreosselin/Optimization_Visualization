@@ -19,8 +19,10 @@ class Algorithm {
 /** Mother class First Order algorithm must do the following task
 * @method differentiate : Approximate the Gradient
 * @method optimize : optimize the algorithm
+* @method setObj : set objective
 * @method setXini : set x_ini
 * @method setStep : Set the step
+* @method reinitialize : Reinitialize Algorithm parameters
 */
 class AlgorithmFirstOrder extends Algorithm{
   constructor(objective, x_ini, h = 0.001, delta = 0.1){
@@ -56,15 +58,25 @@ class AlgorithmFirstOrder extends Algorithm{
     return this.path;
   }
 
+  setObj(new_var){
+    this.objective = new_var
+    this.x = this.x_ini.map(x => x);
+    this.reinitialize();
+  }
+
   setXini(new_var){
     this.x_ini = new_var.map(val => parseFloat(val));
     this.x = this.x_ini.map(x => x);
-    this.path = [];
+    this.reinitialize();
   }
 
   setStep(new_var){
     this.delta = new_var;
     this.x = this.x_ini.map(x => x);
+    this.reinitialize();
+  }
+
+  reinitialize() {
     this.path = [];
   }
 }
@@ -88,8 +100,9 @@ class GradientDescent extends AlgorithmFirstOrder{
   }
 }
 
-/** Simple Gradient Descent algorithm must do the following task
+/** Gradient Descent with momentum must do the following task
 * @method one_step : One step towards the opposite of the gradient with momentum.
+* @method reinitialize : reinitialize path and gradient momentum
 */
 class GradientDescentMomentum extends AlgorithmFirstOrder{
   constructor(objective, x_ini, h = 0.001, delta = 0.1, momentum = 0.9) {
@@ -107,5 +120,10 @@ class GradientDescentMomentum extends AlgorithmFirstOrder{
       norm = norm + this.currentgrad[i] ** 2
     }
     return norm
+  }
+
+  reinitialize() {
+    this.path = []
+    this.currentgrad = this.x_ini.map(x => 0)
   }
 }
