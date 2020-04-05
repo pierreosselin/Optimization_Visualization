@@ -8,6 +8,7 @@
 class Algorithm {
   constructor(objective){
     this.objective = objective;
+    this.path = [];
   }
 
   one_step(){}
@@ -21,17 +22,14 @@ class Algorithm {
   getPath(){}
 }
 
-
-
-
-class GradientDescent extends Algorithm{
-  constructor(objective, x_ini = [1,2], h = 0.01, delta = 0.1) {
+/** Mother class First Order algorithm must do the following task
+* @method differentiate : Approximate the Gradient
+*/
+class AlgorithmFirstOrder extends Algorithm{
+  constructor(objective, h = 0.001, delta = 0.1){
     super(objective);
     this.h = h;
-    this.x_ini = x_ini;
-    this.x = this.x_ini.map(x => x);
     this.delta = delta;
-    this.path = [];
   }
 
   differentiate(arr) {
@@ -46,6 +44,17 @@ class GradientDescent extends Algorithm{
       x_hM[i] = el;
       return gradient;
     })
+  }
+}
+
+
+
+
+class GradientDescent extends AlgorithmFirstOrder{
+  constructor(objective, x_ini, h = 0.001, delta = 0.1) {
+    super(objective, h, delta);
+    this.x_ini = x_ini;
+    this.x = this.x_ini.map(x => x);
   }
 
   one_step() {
