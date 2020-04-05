@@ -28,7 +28,7 @@ function test_sgd(h, eps, nlim) {
     .style("fill", "black")
 
   // Button for function selection
-  var selectFunctionDropdownButton  = d3.select("#dataviz_builtWithD3")
+  var selectFunctionDropdownButton  = d3.select("#buttonSpace")
     .append('select')
   // add the options to the button
   selectFunctionDropdownButton  // Add a button
@@ -40,7 +40,7 @@ function test_sgd(h, eps, nlim) {
     .attr("value", function (d) { return d; }) // corresponding value returned by the button
 
   // Button for algorithm selection
-  var selectAlgorithmDropdownButton  = d3.select("#dataviz_builtWithD3")
+  var selectAlgorithmDropdownButton  = d3.select("#buttonSpace")
     .append('select')
   // add the options to the button
   selectAlgorithmDropdownButton  // Add a button
