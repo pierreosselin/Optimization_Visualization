@@ -104,7 +104,7 @@ function test_sgd(h, eps, nlim) {
   function onAlgorithmChanged(newAlgorithm) {
     d3.select("#path").remove();
     d3.select("#dot").remove();
-    if (myalgorithm == "gd") {
+    if (newAlgorithm == "gd") {
       alg = new GradientDescent(objective,x_ini, h,step)
     } else {
       alg = new GradientDescentMomentum(objective,x_ini, h,step)
