@@ -42,7 +42,7 @@ function test_square(h, eps, nlim) {
   // Definition of all the default variables
   var x_ini = [1.5];
   var objective = square;
-  var alg = new GradientDescent(([x]) => objective([x]), h, x_ini, 0.8);
+  var alg = new GradientDescent(objective,x_ini, h, 0.8);
   alg.optimize(eps, nlim);
 
   // Plot Initial Presentation
@@ -64,7 +64,7 @@ function test_square(h, eps, nlim) {
     document.getElementById("xini").value = objectives[myfunction].x_ini;
 
     // Change Alg and make optimizization
-    alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta.value);
+    alg = new GradientDescent(objective, x_ini, h, objectives[myfunction].delta.value);
     alg.optimize(eps, nlim);
     graphPlot = new GraphPlot(
       d3.select('#svg1'),

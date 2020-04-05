@@ -33,7 +33,7 @@ function test_square(h, eps, nlim) {
   // Definition of all the default variables
   var x_ini = [-30, 175];
   var objective = square;
-  var alg = new GradientDescent(square, h, x_ini, 0.1);
+  var alg = new GradientDescent(square, x_ini, h, 0.1);
   alg.optimize(eps, nlim);
 
   // Plot Initial Presentation
@@ -54,7 +54,7 @@ function test_square(h, eps, nlim) {
     document.getElementById("step").step = objectives[myfunction].delta.step;
 
     // Change Alg and make optimizization
-    alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta.value);
+    alg = new GradientDescent(objective, x_ini, h, objectives[myfunction].delta.value);
     alg.optimize(eps, nlim);
     contourPlot = new ContourPlot(
       d3.select('#svg1'),
@@ -113,7 +113,7 @@ function test_rosenbrock(h, eps, nlim) {
 
   const thresholds = d3.range(1, 20).map(i => Math.pow(2, i));
 
-  const alg = new GradientDescent(rosenbrock, h, x, 0.0001);
+  const alg = new GradientDescent(rosenbrock, x, h, 0.0001);
   alg.optimize(eps, nlim);
 
   const contourPlot = new ContourPlot(

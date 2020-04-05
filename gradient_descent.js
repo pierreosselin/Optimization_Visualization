@@ -1,7 +1,33 @@
-class GradientDescent {
-  constructor(objective, h = 0.01, x_ini = [1,2], delta = 0.1) {
-    this.h = h;
+/** Mother class algorithm must do the following task
+* @method differentiate : Approximate the Gradient
+* @method hessian : Approximate the Hessian
+* @method one_step : Perform one step of the algorithm
+* @method optimization : Perform optimization wth given criterion
+* @method get_path : Get the path of the optimization
+*/
+class Algorithm {
+  constructor(objective){
     this.objective = objective;
+  }
+
+  one_step(){}
+
+  optimize(){}
+
+  setXini(){}
+
+  setStep(){}
+
+  getPath(){}
+}
+
+
+
+
+class GradientDescent extends Algorithm{
+  constructor(objective, x_ini = [1,2], h = 0.01, delta = 0.1) {
+    super(objective);
+    this.h = h;
     this.x_ini = x_ini;
     this.x = this.x_ini.map(x => x);
     this.delta = delta;
