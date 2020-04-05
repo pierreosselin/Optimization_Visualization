@@ -36,7 +36,7 @@ class AlgorithmFirstOrder extends Algorithm{
   differentiate(arr) {
     const x_hP = arr.map(el => el);
     const x_hM = arr.map(el => el);
-    var gradient = 0;
+    let gradient = 0;
     return arr.map((el, i) => {
       x_hP[i] = el + this.h;
       x_hM[i] = el - this.h;
@@ -48,8 +48,8 @@ class AlgorithmFirstOrder extends Algorithm{
   }
 
   optimize(eps, nlim){
-    var norm = 0;
-    var steps = 0;
+    let norm = 0;
+    let steps = 0;
     do {
       this.path.push(this.x.map(x => x));
       norm = (this.one_step())**(1/2);
@@ -91,8 +91,8 @@ class GradientDescent extends AlgorithmFirstOrder{
 
   one_step() {
     const gradient = this.differentiate(this.x);
-    var norm = 0;
-    for (var i = 0, len = gradient.length; i < len; i++) {
+    let norm = 0;
+    for (let i = 0, len = gradient.length; i < len; i++) {
       this.x[i] = this.x[i] - this.delta * gradient[i];
       norm = norm + gradient[i] ** 2
     }
