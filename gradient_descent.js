@@ -92,7 +92,7 @@ class GradientDescent extends AlgorithmFirstOrder{
 * @method one_step : One step towards the opposite of the gradient with momentum.
 */
 class GradientDescentMomentum extends AlgorithmFirstOrder{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1, momentum = 0.8) {
+  constructor(objective, x_ini, h = 0.001, delta = 0.1, momentum = 0.2) {
     super(objective, x_ini, h, delta);
     this.momentum = momentum;
     this.currentgrad = x_ini.map(x => 0);
@@ -103,7 +103,7 @@ class GradientDescentMomentum extends AlgorithmFirstOrder{
     this.currentgrad = this.currentgrad.map((e,i) => this.momentum * e + this.delta * gradient[i])
     var norm = 0;
     for (var i = 0, len = gradient.length; i < len; i++) {
-      this.x[i] = this.x[i] - this.delta * this.currentgrad[i];
+      this.x[i] = this.x[i] - this.currentgrad[i];
       norm = norm + this.currentgrad[i] ** 2
     }
     return norm
