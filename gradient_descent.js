@@ -1,8 +1,6 @@
-/** Mother class algorithm must do the following task
-* @method differentiate : Approximate the Gradient
-* @method hessian : Approximate the Hessian
+/** Mother class algorithm must do the following tasks
 * @method one_step : Perform one step of the algorithm
-* @method optimization : Perform optimization wth given criterion
+* @method optimize : Perform optimization wth given criterion
 * @method get_path : Get the path of the optimization
 */
 class Algorithm {
@@ -15,19 +13,20 @@ class Algorithm {
 
   optimize(){}
 
-  setXini(){}
-
-  setStep(){}
-
-  getPath(){}
+  getPath = () => this.path;
 }
 
 /** Mother class First Order algorithm must do the following task
 * @method differentiate : Approximate the Gradient
+* @method optimize : optimize the algorithm
+* @method setXini : set x_ini
+* @method setStep : Set the step
 */
 class AlgorithmFirstOrder extends Algorithm{
-  constructor(objective, h = 0.001, delta = 0.1){
+  constructor(objective, x_ini, h = 0.001, delta = 0.1){
     super(objective);
+    this.x_ini = x_ini;
+    this.x = this.x_ini.map(x => x);
     this.h = h;
     this.delta = delta;
   }
@@ -44,27 +43,6 @@ class AlgorithmFirstOrder extends Algorithm{
       x_hM[i] = el;
       return gradient;
     })
-  }
-}
-
-
-
-
-class GradientDescent extends AlgorithmFirstOrder{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1) {
-    super(objective, h, delta);
-    this.x_ini = x_ini;
-    this.x = this.x_ini.map(x => x);
-  }
-
-  one_step() {
-    const gradient = this.differentiate(this.x);
-    var norm = 0;
-    for (var i = 0, len = gradient.length; i < len; i++) {
-      this.x[i] = this.x[i] - this.delta * gradient[i];
-      norm = norm + gradient[i] ** 2
-    }
-    return norm
   }
 
   optimize(eps, nlim){
@@ -89,6 +67,45 @@ class GradientDescent extends AlgorithmFirstOrder{
     this.x = this.x_ini.map(x => x);
     this.path = [];
   }
+}
 
-  getPath = () => this.path;
+/** Simple Gradient Descent algorithm must do the following task
+* @method one_step : One step towards the opposite of the gradient
+*/
+class GradientDescent extends AlgorithmFirstOrder{
+  constructor(objective, x_ini, h = 0.001, delta = 0.1) {
+    super(objective, x_ini, h, delta);
+  }
+
+  one_step() {
+    const gradient = this.differentiate(this.x);
+    var norm = 0;
+    for (var i = 0, len = gradient.length; i < len; i++) {
+      this.x[i] = this.x[i] - this.delta * gradient[i];
+      norm = norm + gradient[i] ** 2
+    }
+    return norm
+  }
+}
+
+/** Simple Gradient Descent algorithm must do the following task
+* @method one_step : One step towards the opposite of the gradient with momentum.
+*/
+class GradientDescentMomentum extends AlgorithmFirstOrder{
+  constructor(objective, x_ini, h = 0.001, delta = 0.1, momentum = 0.8) {
+    super(objective, x_ini, h, delta);
+    this.momentum = momentum;
+    this.currentgrad = x_ini.map(x => 0);
+  }
+
+  one_step() {
+    const gradient = this.differentiate(this.x);
+    this.currentgrad = this.currentgrad.map((e,i) => this.momentum * e + this.delta * gradient[i])
+    var norm = 0;
+    for (var i = 0, len = gradient.length; i < len; i++) {
+      this.x[i] = this.x[i] - this.delta * this.currentgrad[i];
+      norm = norm + this.currentgrad[i] ** 2
+    }
+    return norm
+  }
 }
