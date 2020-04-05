@@ -1,14 +1,17 @@
-function test_square(h, eps, nlim) {
+function test_sgd(h, eps, nlim) {
 
   //(Pre)defined functions
   const square = (x) => x ** 2;
   const pow3 = (x) => x ** 3;
-  const allGroup = ["square", "pow3"];
-  const objectives = {"square": {obj: square, x_ini: 1.5, delta: 0.8}, "pow3": {obj: pow3, x_ini: 1.5, delta: 0.1}};
+  const sin3 = (x) => -(1.4 -3*x)*Math.sin(18*x)
+  const algorithms = ["gd", "gdM"];
+  const objectives = {"square": {obj: square, x_ini: 1.5, delta: {value: 0.8, step : 0.05}, xDomain: [-2,2]},
+                      "pow3": {obj: pow3, x_ini: 0.7, delta: {value: 0.1, step : 0.01}, xDomain: [-1,1]},
+                      "sin3": {obj: sin3, x_ini: 1, delta: {value: 0.01, step : 0.001}, xDomain: [0,1.2]}};
 
   // Create basic constituent of the Visualization (Contour Windows and button)
   // Window for contour
-  const graphPlot = new GraphPlot(
+  var graphPlot = new GraphPlot(
     d3.select('#svg1'),
     [-2, 2],
     600,
@@ -25,12 +28,24 @@ function test_square(h, eps, nlim) {
     .style("fill", "black")
 
   // Button for function selection
-  var selectFunctionDropdownButton  = d3.select("#dataviz_builtWithD3")
+  var selectFunctionDropdownButton  = d3.select("#buttonSpace")
     .append('select')
   // add the options to the button
   selectFunctionDropdownButton  // Add a button
     .selectAll('myOptions') // Next 4 lines add 6 options = 6 colors
-   	.data(allGroup)
+   	.data(Object.keys(objectives))
+    .enter()
+  	.append('option')
+    .text(function (d) { return d; }) // text showed in the menu
+    .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+  // Button for algorithm selection
+  var selectAlgorithmDropdownButton  = d3.select("#buttonSpace")
+    .append('select')
+  // add the options to the button
+  selectAlgorithmDropdownButton  // Add a button
+    .selectAll('myOptions') // Next 4 lines add 6 options = 6 colors
+   	.data(algorithms)
     .enter()
   	.append('option')
     .text(function (d) { return d; }) // text showed in the menu
@@ -38,8 +53,9 @@ function test_square(h, eps, nlim) {
 
   // Definition of all the default variables
   var x_ini = [1.5];
+  var step = 0.8;
   var objective = square;
-  var alg = new GradientDescent(([x]) => objective([x]), h, x_ini, 0.8);
+  var alg = new GradientDescent(objective,x_ini, h, 0.8);
   alg.optimize(eps, nlim);
 
   // Plot Initial Presentation
@@ -54,14 +70,22 @@ function test_square(h, eps, nlim) {
     objective = objectives[myfunction].obj;
     d3.select("#svg1").selectAll("*").remove();
     x_ini = [objectives[myfunction].x_ini];
+    step = objectives[myfunction].delta.value
 
     // Change default values of the buttons
-    document.getElementById("step").value = objectives[myfunction].delta;
-    document.getElementById("xini").value = objectives[myfunction].x_ini;
+    document.getElementById("step").value = step;
+    document.getElementById("step").step = objectives[myfunction].delta.step;
+    document.getElementById("xini").value = x_ini[0];
 
     // Change Alg and make optimizization
-    alg = new GradientDescent(objective, h, x_ini, objectives[myfunction].delta);
+    alg = new GradientDescent(objective, x_ini, h, step);
     alg.optimize(eps, nlim);
+    graphPlot = new GraphPlot(
+      d3.select('#svg1'),
+      objectives[myfunction].xDomain,
+      600,
+      600,
+    );
     graphPlot
       .draw(objective, 4)
       .addAxis()
@@ -77,6 +101,19 @@ function test_square(h, eps, nlim) {
       .style("fill", "black")
   }
 
+  function onAlgorithmChanged(newAlgorithm) {
+    d3.select("#path").remove();
+    d3.select("#dot").remove();
+    if (myalgorithm == "gd") {
+      alg = new GradientDescent(objective,x_ini, h,step)
+    } else {
+      alg = new GradientDescentMomentum(objective,x_ini, h,step)
+    }
+    alg.optimize(eps, nlim);
+    graphPlot
+      .addLine(alg.getPath().map(index => [index[0], objective(index)]));
+  }
+
   function changeXini(val) {
     x_ini = [val];
     d3.select("#path").remove();
@@ -88,9 +125,10 @@ function test_square(h, eps, nlim) {
   }
 
   function onStepChanged() {
+    step = this.value
     d3.select("#path").remove();
     d3.select("#dot").remove();
-    alg.setStep(this.value);
+    alg.setStep(step);
     alg.optimize(eps, nlim);
     graphPlot
       .addLine(alg.getPath().map(index => [index[0], objective(index)]));
@@ -110,6 +148,11 @@ function test_square(h, eps, nlim) {
       var selectedOption = d3.select(this).property("value");
       onFunctionChanged(selectedOption);
   })
+  //Update the algorithm
+  selectAlgorithmDropdownButton .on("change", function(d) {
+      var selectedOption = d3.select(this).property("value");
+      onAlgorithmChanged(selectedOption);
+  })
   //Update the initial point
   d3.select("#xini").on("input", function() {
     changeXini(this.value)
@@ -125,5 +168,4 @@ function test_square(h, eps, nlim) {
 
 }
 
-
-test_square(0.01, 0.1, 20);
+test_sgd(0.01, 0.0001, 60);
