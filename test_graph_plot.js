@@ -101,7 +101,7 @@ function test_sgd(h, eps, nlim) {
       .style("fill", "black")
   }
 
-  function onAlgorithmChanged(myalgorithm) {
+  function onAlgorithmChanged(newAlgorithm) {
     d3.select("#path").remove();
     d3.select("#dot").remove();
     if (myalgorithm == "gd") {
