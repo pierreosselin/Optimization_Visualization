@@ -112,6 +112,8 @@ function test_sgd(h, eps, nlim) {
       alg = new GradientDescentMomentumNesterov(objective,x_ini, h,step);
     } else if (myalgorithm == "RMSProp"){
       alg = new RMSProp(objective,x_ini, h,step);
+    } else if (myalgorithm == "Adam"){
+      alg = new ADAM(objective,x_ini, h,step);
     }
     alg.optimize(eps, nlim);
     graphPlot
