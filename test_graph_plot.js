@@ -4,7 +4,7 @@ function test_sgd(h, eps, nlim) {
   const square = (x) => x ** 2;
   const pow3 = (x) => x ** 3;
   const sin3 = (x) => -(1.4 -3*x)*Math.sin(18*x)
-  const algorithms = ["gd", "gdM"];
+  const algorithms = ["gd", "gdM", "gdNM", "RMSProp"];
   const objectives = {"square": {obj: square, x_ini: 1.5, delta: {value: 0.8, step : 0.05}, xDomain: [-2,2]},
                       "pow3": {obj: pow3, x_ini: 0.7, delta: {value: 0.1, step : 0.01}, xDomain: [-1,1]},
                       "sin3": {obj: sin3, x_ini: 1, delta: {value: 0.01, step : 0.001}, xDomain: [0,1.2]}};
@@ -101,13 +101,17 @@ function test_sgd(h, eps, nlim) {
       .style("fill", "black")
   }
 
-  function onAlgorithmChanged(newAlgorithm) {
+  function onAlgorithmChanged(myalgorithm) {
     d3.select("#path").remove();
     d3.select("#dot").remove();
-    if (newAlgorithm == "gd") {
+    if (myalgorithm == "gd") {
       alg = new GradientDescent(objective,x_ini, h,step)
-    } else {
+    } else if (myalgorithm == "gdM"){
       alg = new GradientDescentMomentum(objective,x_ini, h,step)
+    } else if (myalgorithm == "gdNM"){
+      alg = new GradientDescentMomentumNesterov(objective,x_ini, h,step);
+    } else if (myalgorithm == "RMSProp"){
+      alg = new RMSProp(objective,x_ini, h,step);
     }
     alg.optimize(eps, nlim);
     graphPlot
