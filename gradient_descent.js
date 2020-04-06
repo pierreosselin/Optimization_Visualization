@@ -50,11 +50,13 @@ class AlgorithmFirstOrder extends Algorithm{
   optimize(eps, nlim){
     let norm = 0;
     let steps = 0;
+    let domainFlag = true;
     do {
       this.path.push(this.x.map(x => x));
       norm = (this.one_step())**(1/2);
       steps = steps + 1;
-    } while (norm > eps && steps < nlim);
+      //domainFlag = this.x.map((e,i) => (e >= domain[i][0]) && (e <= domain[i][1])).reduce((a,b) => a && b, true);
+    } while (norm > eps && steps < nlim && domainFlag);
     return this.path;
   }
 
