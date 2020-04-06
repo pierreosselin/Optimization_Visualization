@@ -2,7 +2,7 @@ function test_sgd(h, eps, nlim) {
   //(Pre)defined functions
   const square = ([x, y]) => x ** 2 + y ** 2 + (x + y) ** 2;
   const rosenbrock = ([x,y]) => (1-x)**2  + 100*(y - x**2)**2 + 1;
-  const algorithms = ["gd", "gdM", "gdNM"];
+  const algorithms = ["gd", "gdM", "gdNM", "RMSProp"];
   const objectives = {"square": {obj: square, x_ini: [-30, 175], delta: {value: 0.1, step : 0.01}, xDomain : [-200,200], yDomain : [-200,200], interpolation :d3.interpolateMagma},
                       "rosenbrock": {obj: rosenbrock, x_ini: [2.5, -1.5], delta:  {value: 0.0001, step : 0.0001}, xDomain : [-2,3], yDomain : [-2,3], interpolation: d3.interpolateYlGnBu}
                     };
@@ -88,11 +88,13 @@ function test_sgd(h, eps, nlim) {
     d3.select("#path").remove();
     d3.select("#dot").remove();
     if (myalgorithm == "gd") {
-      alg = new GradientDescent(objective,x_ini, h,step)
+      alg = new GradientDescent(objective,x_ini, h,step);
     } else if (myalgorithm == "gdM"){
-      alg = new GradientDescentMomentum(objective,x_ini, h,step)
+      alg = new GradientDescentMomentum(objective,x_ini, h,step);
     } else if (myalgorithm == "gdNM"){
-      alg = new GradientDescentMomentumNesterov(objective,x_ini, h,step)
+      alg = new GradientDescentMomentumNesterov(objective,x_ini, h,step);
+    } else if (myalgorithm == "RMSProp"){
+      alg = new RMSProp(objective,x_ini, h,step);
     }
     alg.optimize(eps, nlim);
     contourPlot
