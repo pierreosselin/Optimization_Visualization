@@ -212,7 +212,7 @@ class Adam extends AlgorithmFirstOrder{
     let firstCorrectionTerm = 1 - this.beta1 ** this.nStep;
     let secondCorrectionTerm = 1 - this.beta2 ** this.nStep;
     let currentFirstMoment = this.currentGradientAverage.map(e => e/firstCorrectionTerm);
-    let currentSecondMoment = this.currentSquareGradientAverage.map(e => e/firstCorrectionTerm);
+    let currentSecondMoment = this.currentSquareGradientAverage.map(e => e/secondCorrectionTerm);
 
     gradient = currentFirstMoment.map((e,i) => (this.delta * e) / (Math.sqrt(currentSecondMoment[i]) + this.epsilon));
     let norm = 0;
