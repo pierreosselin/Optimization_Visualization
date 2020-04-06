@@ -193,7 +193,7 @@ class RMSProp extends AlgorithmFirstOrder{
 * @method one_step : One step towards the opposite of the gradient with nesterov momentum.
 * @method reinitialize : reinitialize path and gradient momentum
 */
-class ADAM extends AlgorithmFirstOrder{
+class Adam extends AlgorithmFirstOrder{
   constructor(objective, x_ini, h = 0.001, delta = 0.1, beta1 = 0.9, beta2 = 0.999, epsilon = 0.00000001) {
     super(objective, x_ini, h, delta);
     this.beta1 = beta1;
