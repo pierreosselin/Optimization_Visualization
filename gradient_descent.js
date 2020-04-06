@@ -129,3 +129,32 @@ class GradientDescentMomentum extends AlgorithmFirstOrder{
     this.currentgrad = this.x_ini.map(x => 0)
   }
 }
+
+/** Gradient Descent with nesterov momentum must do the following task
+* @method one_step : One step towards the opposite of the gradient with nesterov momentum.
+* @method reinitialize : reinitialize path and gradient momentum
+*/
+class GradientDescentMomentumNesterov extends AlgorithmFirstOrder{
+  constructor(objective, x_ini, h = 0.001, delta = 0.1, momentum = 0.9) {
+    super(objective, x_ini, h, delta);
+    this.momentum = momentum;
+    this.currentgrad = x_ini.map(x => 0);
+  }
+
+  one_step() {
+    let x_next = this.x.map((e,i) => e - this.momentum * this.currentgrad[i])
+    const gradient = this.differentiate(x_next);
+    this.currentgrad = this.currentgrad.map((e,i) => this.momentum * e + this.delta * gradient[i])
+    let norm = 0;
+    for (let i = 0, len = gradient.length; i < len; i++) {
+      this.x[i] = this.x[i] - this.currentgrad[i];
+      norm = norm + this.currentgrad[i] ** 2
+    }
+    return norm
+  }
+
+  reinitialize() {
+    this.path = []
+    this.currentgrad = this.x_ini.map(x => 0)
+  }
+}
