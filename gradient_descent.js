@@ -1,11 +1,16 @@
-/** Abstract class Algorithm is only used to define the following API for implemented algorithms:
+/** Abstract class Algorithm is only used to define the following API for implemented algorithmNames:
 * @method one_step : Perform one step of the algorithm
 * @method optimize : Perform optimization wth given criterion
 * @method get_path : Get the path of the optimization
 */
 class Algorithm {
-  constructor(objective){
-    this.objective = objective;
+  constructor(name, params){
+    if (!algorithmsConfig[name].parameters.every(neededParam => Object.keys(params).includes(neededParam))) {
+      throw new Error("Missing parameters");
+    }
+
+    this.params = params;
+    this.name = name;
     this.path = [];
   }
 
@@ -14,6 +19,7 @@ class Algorithm {
   optimize(){}
 
   getPath = () => this.path;
+  getName = () => this.name;
 }
 
 /** Mother class First Order algorithm must do the following task
@@ -22,15 +28,15 @@ class Algorithm {
 * @method setObj : set objective
 * @method setXini : set x_ini
 * @method setStep : Set the step
-* @method reinitialize : Reinitialize Algorithm parameters
 */
 class AlgorithmFirstOrder extends Algorithm{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1){
-    super(objective);
-    this.x_ini = x_ini;
+  constructor(name, params){
+    super(name, params);
+    this.objective = params[paramNames.objectiveFunction];
+    this.x_ini = params[paramNames.x_ini];
     this.x = this.x_ini.map(x => x);
-    this.h = h;
-    this.delta = delta;
+    this.h = params[paramNames.h];
+    this.delta = params[paramNames.delta];
   }
 
   differentiate(arr) {
@@ -47,7 +53,7 @@ class AlgorithmFirstOrder extends Algorithm{
     })
   }
 
-  optimize(eps, nlim){
+  optimize(){
     let norm = 0;
     let steps = 0;
     let domainFlag = true;
@@ -56,30 +62,8 @@ class AlgorithmFirstOrder extends Algorithm{
       norm = (this.one_step())**(1/2);
       steps = steps + 1;
       //domainFlag = this.x.map((e,i) => (e >= domain[i][0]) && (e <= domain[i][1])).reduce((a,b) => a && b, true);
-    } while (norm > eps && steps < nlim && domainFlag);
+    } while (norm > this.params[paramNames.normLim] && steps < this.params[paramNames.nlim] && domainFlag);
     return this.path;
-  }
-
-  setObj(new_var){
-    this.objective = new_var
-    this.x = this.x_ini.map(x => x);
-    this.reinitialize();
-  }
-
-  setXini(new_var){
-    this.x_ini = new_var.map(val => parseFloat(val));
-    this.x = this.x_ini.map(x => x);
-    this.reinitialize();
-  }
-
-  setStep(new_var){
-    this.delta = new_var;
-    this.x = this.x_ini.map(x => x);
-    this.reinitialize();
-  }
-
-  reinitialize() {
-    this.path = [];
   }
 }
 
@@ -87,8 +71,8 @@ class AlgorithmFirstOrder extends Algorithm{
 * @method one_step : One step towards the opposite of the gradient
 */
 class GradientDescent extends AlgorithmFirstOrder{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1) {
-    super(objective, x_ini, h, delta);
+  constructor(params) {
+    super(algorithmNames.gradientDescent, params);
   }
 
   one_step() {
@@ -104,13 +88,12 @@ class GradientDescent extends AlgorithmFirstOrder{
 
 /** Gradient Descent with momentum must do the following task
 * @method one_step : One step towards the opposite of the gradient with momentum.
-* @method reinitialize : reinitialize path and gradient momentum
 */
 class GradientDescentMomentum extends AlgorithmFirstOrder{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1, momentum = 0.9) {
-    super(objective, x_ini, h, delta);
-    this.momentum = momentum;
-    this.currentgrad = this.x_ini.map(x => 0);
+  constructor(params) {
+    super(algorithmNames.gradientDescentWithMomentum, params);
+    this.momentum = params[paramNames.momentum];
+    this.currentgrad = this.x_ini.map(() => 0);
   }
 
   one_step() {
@@ -123,28 +106,22 @@ class GradientDescentMomentum extends AlgorithmFirstOrder{
     }
     return norm
   }
-
-  reinitialize() {
-    this.path = []
-    this.currentgrad = this.x_ini.map(x => 0)
-  }
 }
 
 /** Gradient Descent with nesterov momentum must do the following task
 * @method one_step : One step towards the opposite of the gradient with nesterov momentum.
-* @method reinitialize : reinitialize path and gradient momentum
 */
 class GradientDescentMomentumNesterov extends AlgorithmFirstOrder{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1, momentum = 0.9) {
-    super(objective, x_ini, h, delta);
-    this.momentum = momentum;
-    this.currentgrad = this.x_ini.map(x => 0);
+  constructor(params) {
+    super(algorithmNames.gradientDescentMomentumNesterov, params);
+    this.momentum = params[paramNames.momentum];
+    this.currentgrad = this.x_ini.map(() => 0);
   }
 
   one_step() {
-    let x_next = this.x.map((e,i) => e - this.momentum * this.currentgrad[i])
+    let x_next = this.x.map((e,i) => e - this.momentum * this.currentgrad[i]);
     const gradient = this.differentiate(x_next);
-    this.currentgrad = this.currentgrad.map((e,i) => this.momentum * e + this.delta * gradient[i])
+    this.currentgrad = this.currentgrad.map((e,i) => this.momentum * e + this.delta * gradient[i]);
     let norm = 0;
     for (let i = 0, len = gradient.length; i < len; i++) {
       this.x[i] = this.x[i] - this.currentgrad[i];
@@ -152,23 +129,17 @@ class GradientDescentMomentumNesterov extends AlgorithmFirstOrder{
     }
     return norm
   }
-
-  reinitialize() {
-    this.path = []
-    this.currentgrad = this.x_ini.map(x => 0)
-  }
 }
 
 /** Gradient Descent with nesterov momentum must do the following task
 * @method one_step : One step towards the opposite of the gradient with nesterov momentum.
-* @method reinitialize : reinitialize path and gradient momentum
 */
 class RMSProp extends AlgorithmFirstOrder{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1, rho = 0.9, epsilon = 0.00000001) {
-    super(objective, x_ini, h, delta);
-    this.rho = rho;
-    this.epsilon = epsilon;
-    this.currentSquareGradientAverage = this.x_ini.map(x => 0);
+  constructor(params) {
+    super(algorithmNames.RMSProp, params);
+    this.rho = params[paramNames.rho];
+    this.epsilon = params[paramNames.epsilon];
+    this.currentSquareGradientAverage = this.x_ini.map(() => 0);
   }
 
   one_step() {
@@ -182,25 +153,19 @@ class RMSProp extends AlgorithmFirstOrder{
     }
     return norm
   }
-
-  reinitialize() {
-    this.path = []
-    this.currentSquareGradientAverage = this.x_ini.map(x => 0)
-  }
 }
 
 /** Gradient Descent with nesterov momentum must do the following task
 * @method one_step : One step towards the opposite of the gradient with nesterov momentum.
-* @method reinitialize : reinitialize path and gradient momentum
 */
 class Adam extends AlgorithmFirstOrder{
-  constructor(objective, x_ini, h = 0.001, delta = 0.1, beta1 = 0.9, beta2 = 0.999, epsilon = 0.00000001) {
-    super(objective, x_ini, h, delta);
-    this.beta1 = beta1;
-    this.beta2 = beta2;
-    this.epsilon = epsilon;
-    this.currentGradientAverage = this.x_ini.map(x => 0);
-    this.currentSquareGradientAverage = this.x_ini.map(x => 0);
+  constructor(params) {
+    super(algorithmNames.adam, params);
+    this.beta1 = params[paramNames.beta1];
+    this.beta2 = params[paramNames.beta2];
+    this.epsilon = params[paramNames.epsilon];
+    this.currentGradientAverage = this.x_ini.map(() => 0);
+    this.currentSquareGradientAverage = this.x_ini.map(() => 0);
     this.nStep = 0;
   }
 
@@ -221,12 +186,5 @@ class Adam extends AlgorithmFirstOrder{
       norm = norm + gradient[i] ** 2
     }
     return norm
-  }
-
-  reinitialize() {
-    this.path = [];
-    this.currentGradientAverage = this.x_ini.map(x => 0);
-    this.currentSquareGradientAverage = this.x_ini.map(x => 0);
-    this.nStep = 0;
   }
 }
