@@ -4,21 +4,36 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <link rel="stylesheet" type="text/css" href="./graph.css"  />
+  <link rel="stylesheet" type="text/css" href="./buttons.css"  />
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="latex.js"></script>
 </head>
 <body>
-  <div id="buttonSpace" align="center">
-    <label for="step">Descent step:</label>
-    <input type="number" id="step" value=0.1 step=0.01>
-  </div>
+  <div id="algoButtonSpace" class="buttonGroup"></div>
+  <div id="algoParamsButtonSpace" class="buttonGroup"></div>
   <svg id="svg1" class="svg-content-responsive" style="margin: 0 auto; display: block;"></svg>
-  <script src="contour_plot.js"></script>
-  <script src="gradient_descent.js"></script>
-  <script src="test_contour_plot.js"></script>
   <div id="documentation" align="center">
     <p style="color:black;font-size:50px;"> Gradient Descent Algorithm</p>
     <div lang="latex">x_{k + 1} = x_{k} - \alpha_{k} \nabla_{x}f(x_{k})</div>
   </div>
+
+  <script src="gradient_descent.js"></script>
+  <script src="config.js"></script>
+  <script src="ParameterInput.js"></script>
+  <script src="ApplicationManager.js"></script>
+  <script src="contour_plot.js"></script>
+  <script>
+    const initialObjective = paramsConfig[paramNames.objectiveFunction].values[plotTypes.contour_plot].get_init_value().name;
+    const xDomain = paramsConfig[paramNames.xDomain].values[plotTypes.contour_plot].get_init_value(null, initialObjective);
+    const yDomain = paramsConfig[paramNames.yDomain].values[plotTypes.contour_plot].get_init_value(null, initialObjective);
+    let contourPlot = new ContourPlot(
+      d3.select('#svg1'),
+      xDomain,
+      yDomain,
+      600,
+      600,
+    );
+    new ApplicationManager(contourPlot);
+  </script>
 </body>
 </html>
