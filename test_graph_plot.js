@@ -102,8 +102,8 @@ function test_sgd(h, eps, nlim) {
   }
 
   function onAlgorithmChanged(myalgorithm) {
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     if (myalgorithm == "gd") {
       alg = new GradientDescent(objective,x_ini, h,step)
     } else if (myalgorithm == "gdM"){
@@ -122,8 +122,8 @@ function test_sgd(h, eps, nlim) {
 
   function changeXini(val) {
     x_ini = [val];
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     alg.setXini(x_ini);
     alg.optimize(eps, nlim);
     graphPlot
@@ -132,8 +132,8 @@ function test_sgd(h, eps, nlim) {
 
   function onStepChanged() {
     step = this.value
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     alg.setStep(step);
     alg.optimize(eps, nlim);
     graphPlot

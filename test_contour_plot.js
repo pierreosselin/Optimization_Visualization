@@ -85,8 +85,8 @@ function test_sgd(h, eps, nlim) {
 
   // Update Algorithm
   function onAlgorithmChanged(myalgorithm) {
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     if (myalgorithm == "gd") {
       alg = new GradientDescent(objective,x_ini, h,step);
     } else if (myalgorithm == "gdM"){
@@ -106,8 +106,8 @@ function test_sgd(h, eps, nlim) {
   // Update Xini
   function changeXini([valx, valy]) {
     x_ini = [valx, valy];
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     alg.setXini(x_ini);
     alg.optimize(eps, nlim);
     contourPlot
@@ -116,8 +116,8 @@ function test_sgd(h, eps, nlim) {
 
   // Function updating the step
   function onStepChanged() {
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     step = this.value
     alg.setStep(step);
     alg.optimize(eps, nlim);
