@@ -7,6 +7,7 @@ class ContourPlot {
    * @param height - pixels height of the plot.
    */
   constructor(svg, xDomain, yDomain, width, height) {
+    this.type = plotTypes.contour_plot;
     this.svg = svg;
     this.xScale = d3.scaleLinear(xDomain, [0, width]);
     this.yScale = d3.scaleLinear(yDomain, [height, 0]);
@@ -183,4 +184,18 @@ class ContourPlot {
 
     return this;
   }
+
+  clearLines() {
+    d3.select("#path").remove();
+    d3.select("#dot").remove();
+  }
+
+  clearAll() {
+    d3.select("#svg1").selectAll("*").remove();
+  }
+
+  getType = () => this.type;
+
+  setXDomain = (xDomain) => this.xScale = d3.scaleLinear(xDomain, [0, this.width]);
+  setYDomain = (yDomain) => this.yScale = d3.scaleLinear(yDomain, [this.height, 0]);
 }
