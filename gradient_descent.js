@@ -93,7 +93,7 @@ class AlgorithmSecondOrder extends AlgorithmFirstOrder{
     let n = arr.length;
     if (n == 1){
       return [[(- 1 * this.objective([arr[0] + 2*this.h]) + 16 * this.objective([arr[0] + this.h]) - 30 * this.objective(arr) + 16 * this.objective([arr[0] - this.h]) - this.objective([arr[0] - 2*this.h]))/(12 * this.h ** 2)]];
-}
+      }
       let hess = 0;
       const x_hPP = arr.map(el => el);
       const x_hP = arr.map(el => el);
@@ -129,7 +129,6 @@ class AlgorithmSecondOrder extends AlgorithmFirstOrder{
 
       return [[diag[0], corner], [corner, diag[1]]]
     }
-  }
 }
 
 /** Simple Gradient Descent algorithm must do the following task
