@@ -20,6 +20,7 @@ class ApplicationManager {
     };
 
     this.resetParams(initialAlgoName);
+    this.resetAlgo(initialAlgoName);
 
     this.algoDropdown = parameterInputFactory(
       paramNames.algorithmName,
@@ -33,12 +34,23 @@ class ApplicationManager {
     this.paramButtons = {};
     this.resetParametersButtons();
 
+    this.xiniclick = parameterInputFactory(
+      null,
+      inputTypes.click,
+      null,
+      null,
+      xini => this.setParam(paramNames.x_ini, xini),
+      "#svg1"
+    );
+
     this.plotFunctionAndAxis();
     this.plotAlgoResults();
   }
 
-  resetParams(algoName) {
-    this.algoParams = algorithmsConfig[algoName].parameters.reduce(
+
+
+  getInitializedParams(algoName) {
+    let initializedParam = algorithmsConfig[algoName].parameters.reduce(
       (params, paramName) => {
         if (paramName === paramNames.objectiveFunction) {
           return {
@@ -60,7 +72,23 @@ class ApplicationManager {
       },
       {}
     );
+    return {...initializedParam}
+  }
 
+  resetParams(algoName) {
+    this.algoParams = this.getInitializedParams(algoName);
+  }
+
+  changeAlgorithmParams(algoName) {
+    let newAlgoParams = this.getInitializedParams(algoName);
+    for (let key in newAlgoParams) {
+      if (key in this.algoParams){
+        if (!(key === paramNames.objectiveFunction || key === paramNames.algorithmName)){
+          newAlgoParams[key] = this.algoParams[key]
+        }
+      }
+    };
+    this.algoParams = {...newAlgoParams};
     this.resetAlgo(algoName);
   }
 
@@ -104,11 +132,9 @@ class ApplicationManager {
     }
 
     if (paramName === paramNames.algorithmName) {
-      this.resetParams(value.name, this.objectiveFunction.name, this.objectiveFunction.value);
+      this.changeAlgorithmParams(value.name, this.objectiveFunction.name, this.objectiveFunction.value);
       this.resetParametersButtons();
-
       this.plotAlgoResults();
-
       return;
     }
 
@@ -116,6 +142,7 @@ class ApplicationManager {
       this.algoParams[paramNames.objectiveFunction] = value;
       this.objectiveFunction = value;
       this.resetParams(this.algo.getName());
+      this.resetAlgo(this.algo.getName());
 
       const xDomain = paramsConfig[paramNames.xDomain].values[this.plot.getType()]
         .get_init_value(null, this.objectiveFunction.name);
@@ -127,6 +154,20 @@ class ApplicationManager {
       this.plotFunctionAndAxis();
       this.plotAlgoResults();
       this.resetParametersButtons();
+      return;
+    }
+
+    if (paramName === paramNames.x_ini) {
+      if (this.plot.getType() === plotTypes.plot_1D){
+        this.algoParams[paramName] = [this.plot.xScale.invert(value[0])];
+      }
+
+      if (this.plot.getType() === plotTypes.contour_plot){
+        this.algoParams[paramName] = [this.plot.xScale.invert(value[0]), this.plot.yScale.invert(value[1])];
+      }
+
+      this.resetAlgo(this.algo.getName());
+      this.plotAlgoResults();
       return;
     }
 
@@ -147,10 +188,8 @@ class ApplicationManager {
       let initValue;
       if (param === paramNames.objectiveFunction) {
         initValue = this.objectiveFunction;
-      } else if (param === paramNames.algorithmName) {
-        initValue = domain.find(({name}) => name === this.algo.getName());
       } else {
-        initValue = getInitValue(this.algo.getName(), this.objectiveFunction.name);
+        initValue = this.algoParams[param];
       }
       const onValueChanged = value => this.setParam(param, value);
       this.paramButtons[param] = parameterInputFactory(param, inputType, initValue, domain, onValueChanged, "#algoParamsButtonSpace")
