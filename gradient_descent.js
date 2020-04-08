@@ -285,7 +285,7 @@ class Adam extends AlgorithmFirstOrder{
   }
 }
 
-/** Gradient Descent with nesterov momentum must do the following task
+/** BFGS implements the following interface
 * @method one_step : One step towards the bfgs direction.
 * @method reinitialize : Reinitialize quantity that are proper the the algorithm.
 */
