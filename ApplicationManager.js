@@ -183,16 +183,18 @@ class ApplicationManager {
   resetParametersButtons() {
     d3.select("#algoParamsButtonSpace").selectAll("*").remove();
     algorithmsConfig[this.algo.getName()].parameters.forEach(param => {
-      const { input_type: inputType } = paramsConfig[param];
-      const { domain, get_init_value: getInitValue } = paramsConfig[param].values[this.plot.getType()];
-      let initValue;
-      if (param === paramNames.objectiveFunction) {
-        initValue = this.objectiveFunction;
-      } else {
-        initValue = this.algoParams[param];
+      if (!(param === paramNames.x_ini)) {
+        const { input_type: inputType } = paramsConfig[param];
+        const { domain, get_init_value: getInitValue } = paramsConfig[param].values[this.plot.getType()];
+        let initValue;
+        if (param === paramNames.objectiveFunction) {
+          initValue = this.objectiveFunction;
+        } else {
+          initValue = this.algoParams[param];
+        }
+        const onValueChanged = value => this.setParam(param, value);
+        this.paramButtons[param] = parameterInputFactory(param, inputType, initValue, domain, onValueChanged, "#algoParamsButtonSpace")
       }
-      const onValueChanged = value => this.setParam(param, value);
-      this.paramButtons[param] = parameterInputFactory(param, inputType, initValue, domain, onValueChanged, "#algoParamsButtonSpace")
     })
   }
 }
