@@ -67,7 +67,7 @@ class ApplicationManager {
   }
 
   resetParams(algoName) {
-    this.algoParams = get_Initialized_Params(algoName);
+    this.algoParams = this.get_Initialized_Params(algoName);
   }
 
   changeParamsAlgorithms(algoName) {
