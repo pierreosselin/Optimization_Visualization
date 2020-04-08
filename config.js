@@ -191,11 +191,11 @@ const paramsConfig = {
     input_type: inputTypes.text,
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: () => 0.000001,
+        get_init_value: () => 0.001,
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: () => 0.000001,
+        get_init_value: () => 0.001,
         domain: value => value > 0,
       }
     },
@@ -243,11 +243,11 @@ const paramsConfig = {
     input_type: inputTypes.text,
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: () => 0.00000001,
+        get_init_value: () => 0.0000001,
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: () => 0.00000001,
+        get_init_value: () => 0.0000001,
         domain: value => value > 0,
       }
     }
