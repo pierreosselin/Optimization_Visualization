@@ -20,7 +20,7 @@ class ApplicationManager {
     };
 
     this.resetParams(initialAlgoName);
-    this.resetAlgo(algoName);
+    this.resetAlgo(initialAlgoName);
 
     this.algoDropdown = parameterInputFactory(
       paramNames.algorithmName,
