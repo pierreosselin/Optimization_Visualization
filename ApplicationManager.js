@@ -158,11 +158,14 @@ class ApplicationManager {
     }
 
     if (paramName === paramNames.x_ini) {
-      if (value.length == 1){
+      if (this.plot.getType() === plotTypes.plot_1D){
         this.algoParams[paramName] = [this.plot.xScale.invert(value[0])];
-      } else {
+      }
+
+      if (this.plot.getType() === plotTypes.contour_plot){
         this.algoParams[paramName] = [this.plot.xScale.invert(value[0]), this.plot.yScale.invert(value[1])];
       }
+
       this.resetAlgo(this.algo.getName());
       this.plotAlgoResults();
       return;
