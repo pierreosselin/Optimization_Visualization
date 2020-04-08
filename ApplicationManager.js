@@ -131,8 +131,7 @@ class ApplicationManager {
       this.algoParams[paramNames.objectiveFunction] = value;
       this.objectiveFunction = value;
       this.algoParams = this.get_Initialized_Params(this.algo.getName());
-
-      this.resetAlgo(algoName);
+      this.resetAlgo(this.algo.getName());
 
       const xDomain = paramsConfig[paramNames.xDomain].values[this.plot.getType()]
         .get_init_value(null, this.objectiveFunction.name);
