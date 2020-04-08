@@ -162,6 +162,9 @@ class ContourPlot {
     return this;
   }
 
+  /**
+  * @deprecated - method without animation.
+  **/
   addLine2(points) {
     const line = d3.line()(points.map(([x, y]) => [this.xScale(x), this.yScale(y)]));
 
