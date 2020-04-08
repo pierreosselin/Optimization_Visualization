@@ -148,4 +148,4 @@ function test_sgd(h, eps, nlim) {
   })
 }
 //test_sgdM(0.01, 0.1, 20);
-test_sgd(0.01, 0.0000001, 5);
+test_sgd(0.01, 0.0000001, 30);
