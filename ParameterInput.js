@@ -75,7 +75,5 @@ function parameterInputFactory(label, inputType, initialValue, domain, onValueCh
   if (inputType === inputTypes.click) {
     return new ClickParameterInput(onValueChanged, containerId);
   }
-
-  // TODO, implement class ClickParameterInput and delete test_graph_plot.js and test_contour_plot.js
   return;
 }

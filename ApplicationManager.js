@@ -76,19 +76,19 @@ class ApplicationManager {
   }
 
   resetParams(algoName) {
-    this.algoParams = this.get_Initialized_Params(algoName);
+    this.algoParams = this.getInitializedParams(algoName);
   }
 
   changeAlgorithmParams(algoName) {
-    let new_algoParams = this.get_Initialized_Params(algoName);
+    let newAlgoParams = this.getInitializedParams(algoName);
     for (let key in newAlgoParams) {
       if (key in this.algoParams){
         if (!(key === paramNames.objectiveFunction || key === paramNames.algorithmName)){
-          new_algoParams[key] = this.algoParams[key]
+          newAlgoParams[key] = this.algoParams[key]
         }
       }
     };
-    this.algoParams = {...new_algoParams};
+    this.algoParams = {...newAlgoParams};
     this.resetAlgo(algoName);
   }
 
@@ -132,7 +132,7 @@ class ApplicationManager {
     }
 
     if (paramName === paramNames.algorithmName) {
-      this.changeParamsAlgorithms(value.name, this.objectiveFunction.name, this.objectiveFunction.value);
+      this.changeAlgorithmParams(value.name, this.objectiveFunction.name, this.objectiveFunction.value);
       this.resetParametersButtons();
       this.plotAlgoResults();
       return;
