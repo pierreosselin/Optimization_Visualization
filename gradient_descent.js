@@ -81,7 +81,7 @@ class AlgorithmFirstOrder extends Algorithm{
   }
 }
 
-/** Mother class First Order algorithm must do the following task
+/** Class AlgorithmSecondOrder implements the following interface
 * @method hessian : Approximate the Hessian our implementation only works for 1 element and 2 element arrays
 */
 class AlgorithmSecondOrder extends AlgorithmFirstOrder{
