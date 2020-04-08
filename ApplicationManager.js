@@ -81,7 +81,7 @@ class ApplicationManager {
 
   changeAlgorithmParams(algoName) {
     let new_algoParams = this.get_Initialized_Params(algoName);
-    for (let key in new_algoParams) {
+    for (let key in newAlgoParams) {
       if (key in this.algoParams){
         if (!(key === paramNames.objectiveFunction || key === paramNames.algorithmName)){
           new_algoParams[key] = this.algoParams[key]
