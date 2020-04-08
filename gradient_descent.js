@@ -188,3 +188,54 @@ class Adam extends AlgorithmFirstOrder{
     return norm
   }
 }
+
+/** BFGS implements the following interface
+* @method one_step : One step towards the bfgs direction.
+*/
+class BFGS extends AlgorithmFirstOrder{
+  constructor(params) {
+    super(algorithmNames.bfgs, params);
+    this.x_ini = array2vec(this.x_ini);
+    this.x = array2vec(this.x);
+    this.currentGradient = this.differentiate(this.x);
+    this.currentHessian = eye(x_ini.length);
+  }
+
+  one_step() {
+    let direction = solve(this.currentHessian, this.currentGradient.map(el => -1 * this.delta * el ));
+    this.x = add(this.x, direction);
+    let next_gradient = this.differentiate(this.x);
+    let y_k = sub(next_gradient, this.currentGradient);
+    let firstQuantity = mul(direction, y_k);
+    let secondQuantity = mul(this.currentHessian, direction);
+    let thirdQuantity = mul(direction, secondQuantity);
+    this.currentHessian = add(this.currentHessian, sub(mul(y_k, transpose(y_k.map(el => el/firstQuantity))), mul(secondQuantity, transpose(secondQuantity.map(el => el / thirdQuantity)))));
+    let normGrad = norm(this.currentGradient);
+    this.currentGradient = next_gradient.map(el => el);
+    return normGrad
+  }
+}
+
+/** Newton Descent
+* @method one_step : Perform Newton Step.
+*/
+class DampedNewton extends AlgorithmSecondOrder{
+  constructor(params) {
+    super(algorithmNames.newton, params);
+    this.epsilon = params[paramNames.epsilon];
+    this.x_ini = array2vec(this.x_ini);
+    this.x = array2vec(this.x);
+  }
+  one_step() {
+    let hess = array2mat(this.hessian(this.x));
+    let eigdec = eigs(hess, this.x_ini.length);
+    let eigval = eigdec.V;
+    let eigvec = eigdec.U;
+    eigval = eigval.map(el => Math.max(Math.abs(el), this.epsilon));
+    hess = mul(eigvec, mul(diag(eigval), transpose(eigvec)));
+    let gradient = this.differentiate(this.x);
+    let direction = solve(hess, mul(-1, gradient));
+    this.x = add(this.x, direction.map(el => el * this.delta));
+    return norm(gradient);
+  }
+}
