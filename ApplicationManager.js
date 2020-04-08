@@ -2,6 +2,7 @@
  * Manages application state and updates parameter buttons and plot as needed.
  */
 class ApplicationManager {
+  console.log("test");
   constructor(plot) {
     this.plot = plot;
 
