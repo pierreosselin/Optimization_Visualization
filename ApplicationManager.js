@@ -19,7 +19,7 @@ class ApplicationManager {
       value: initialObjective
     };
 
-    this.algoParams = this.get_Initialized_Params(initialAlgoName);
+    this.resetParams(initialAlgoName);
     this.resetAlgo(algoName);
 
     this.algoDropdown = parameterInputFactory(
@@ -64,6 +64,10 @@ class ApplicationManager {
       {}
     );
     return {...initializedParam}
+  }
+
+  resetParams(algoName) {
+    this.algoParams = get_Initialized_Params(algoName);
   }
 
   changeParamsAlgorithms(algoName) {
@@ -130,7 +134,7 @@ class ApplicationManager {
     if (paramName === paramNames.objectiveFunction) {
       this.algoParams[paramNames.objectiveFunction] = value;
       this.objectiveFunction = value;
-      this.algoParams = this.get_Initialized_Params(this.algo.getName());
+      this.resetParams(this.algo.getName());
       this.resetAlgo(this.algo.getName());
 
       const xDomain = paramsConfig[paramNames.xDomain].values[this.plot.getType()]
