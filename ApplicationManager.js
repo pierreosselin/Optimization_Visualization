@@ -49,7 +49,7 @@ class ApplicationManager {
 
 
 
-  get_Initialized_Params(algoName) {
+  getInitializedParams(algoName) {
     let initializedParam = algorithmsConfig[algoName].parameters.reduce(
       (params, paramName) => {
         if (paramName === paramNames.objectiveFunction) {
