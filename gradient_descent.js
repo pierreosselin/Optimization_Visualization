@@ -320,9 +320,8 @@ class BFGS extends AlgorithmFirstOrder{
   }
 }
 
-/** Gradient Descent with nesterov momentum must do the following task
-* @method one_step : One step towards the bfgs direction.
-* @method reinitialize : Reinitialize quantity that are proper the the algorithm.
+/** Newton Descent
+* @method one_step : Perform Newton Step.
 */
 class DampedNewton extends AlgorithmSecondOrder{
   constructor(objective, x_ini, h = 0.00001, delta = 0.1, epsilon = 0.000001) {
@@ -331,14 +330,16 @@ class DampedNewton extends AlgorithmSecondOrder{
     this.x = array2vec(this.x);
     this.epsilon = epsilon;
   }
-
   one_step() {
-    let hess = this.hessian(this.x);
-    let eigdec = eig(hess, true);
+    let hess = array2mat(this.hessian(this.x));
+    let eigdec = eigs(hess, this.x_ini.length);
     let eigval = eigdec.V;
     let eigvec = eigdec.U;
-
-    
+    eigval = eigval.map(el => Math.max(Math.abs(el), this.epsilon));
+    hess = mul(eigvec, mul(diag(eigval), transpose(eigvec)));
+    let gradient = this.differentiate(this.x);
+    let direction = solve(hess, mul(-1, gradient));
+    this.x = add(this.x, direction.map(el => el * this.delta));
+    return norm(gradient);
   }
-
 }

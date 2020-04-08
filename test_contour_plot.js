@@ -2,7 +2,7 @@ function test_sgd(h, eps, nlim) {
   //(Pre)defined functions
   const square = ([x, y]) => x ** 2 + y ** 2 + (x + y) ** 2;
   const rosenbrock = ([x,y]) => (1-x)**2  + 100*(y - x**2)**2 + 1;
-  const algorithms = ["gd", "gdM", "gdNM", "RMSProp", "Adam", "BFGS"];
+  const algorithms = ["gd", "gdM", "gdNM", "RMSProp", "Adam", "BFGS", "Newton"];
   const objectives = {"square": {obj: square, x_ini: [-30, 175], delta: {value: 0.1, step : 0.01}, xDomain : [-200,200], yDomain : [-200,200], interpolation :d3.interpolateMagma},
                       "rosenbrock": {obj: rosenbrock, x_ini: [2.5, -1.5], delta:  {value: 0.0001, step : 0.0001}, xDomain : [-2,3], yDomain : [-2,3], interpolation: d3.interpolateYlGnBu}
                     };
@@ -99,6 +99,8 @@ function test_sgd(h, eps, nlim) {
       alg = new Adam(objective,x_ini, h,step);
     } else if (myalgorithm == "BFGS"){
       alg = new BFGS(objective,x_ini, h,step);
+    } else if (myalgorithm == "Newton"){
+      alg = new DampedNewton(objective,x_ini, h,step);
     }
     alg.optimize(eps, nlim);
     contourPlot
@@ -146,4 +148,4 @@ function test_sgd(h, eps, nlim) {
   })
 }
 //test_sgdM(0.01, 0.1, 20);
-test_sgd(0.01, 0.0000001, 60);
+test_sgd(0.01, 0.0000001, 5);
