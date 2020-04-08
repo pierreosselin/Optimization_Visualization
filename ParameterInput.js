@@ -50,7 +50,11 @@ class TextParameterInput extends ParameterInput {
   }
 }
 
-// class ClickParameterInput extends ParameterInput
+class ClickParameterInput extends ParameterInput {
+  constructor(label, initialValue, domain, onValueChanged, containerId) {
+    super(label, domain, onValueChanged, containerId);
+  }
+}
 
 function parameterInputFactory(label, inputType, initialValue, domain, onValueChanged, containerId) {
   if (!Object.values(inputTypes).includes(inputType)) {
