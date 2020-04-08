@@ -41,6 +41,8 @@ const algorithmNames = {
   gradientDescentMomentumNesterov: "Gradient Descent With Momentum Nesterov",
   RMSProp: "RMSProp",
   adam: "Adam",
+  bfgs: "BFGS",
+  newton: "Newton",
 };
 
 const plotTypes = {
@@ -112,6 +114,29 @@ const algorithmsConfig = {
       paramNames.normLim,
     ]
   },
+  [algorithmNames.bfgs]: {
+    class: BFGS,
+    parameters: [
+      paramNames.objectiveFunction,
+      paramNames.x_ini,
+      paramNames.delta,
+      paramNames.h,
+      paramNames.nlim,
+      paramNames.normLim,
+    ]
+  },
+  [algorithmNames.newton]: {
+    class: DampedNewton,
+    parameters: [
+      paramNames.objectiveFunction,
+      paramNames.x_ini,
+      paramNames.delta,
+      paramNames.h,
+      paramNames.epsilon,
+      paramNames.nlim,
+      paramNames.normLim,
+    ]
+  },
 };
 
 const paramsConfig = {
@@ -166,11 +191,11 @@ const paramsConfig = {
     input_type: inputTypes.text,
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: () => 0.01,
+        get_init_value: () => 0.001,
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: () => 0.01,
+        get_init_value: () => 0.001,
         domain: value => value > 0,
       }
     },
@@ -218,11 +243,11 @@ const paramsConfig = {
     input_type: inputTypes.text,
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: () => 0.00000001,
+        get_init_value: () => 0.0000001,
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: () => 0.00000001,
+        get_init_value: () => 0.0000001,
         domain: value => value > 0,
       }
     }
