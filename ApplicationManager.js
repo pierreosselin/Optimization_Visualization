@@ -34,6 +34,15 @@ class ApplicationManager {
     this.paramButtons = {};
     this.resetParametersButtons();
 
+    this.xiniclick = parameterInputFactory(
+      null,
+      inputTypes.click,
+      null,
+      null,
+      xini => this.setParam(paramNames.x_ini, xini),
+      "#svg1"
+    );
+
     this.plotFunctionAndAxis();
     this.plotAlgoResults();
   }
@@ -125,9 +134,7 @@ class ApplicationManager {
     if (paramName === paramNames.algorithmName) {
       this.changeParamsAlgorithms(value.name, this.objectiveFunction.name, this.objectiveFunction.value);
       this.resetParametersButtons();
-
       this.plotAlgoResults();
-
       return;
     }
 
@@ -147,6 +154,17 @@ class ApplicationManager {
       this.plotFunctionAndAxis();
       this.plotAlgoResults();
       this.resetParametersButtons();
+      return;
+    }
+
+    if (paramName === paramNames.x_ini) {
+      if (value.length == 1){
+        this.algoParams[paramName] = [this.plot.xScale.invert(value[0])];
+      } else {
+        this.algoParams[paramName] = [this.plot.xScale.invert(value[0]), this.plot.yScale.invert(value[1])];
+      }
+      this.resetAlgo(this.algo.getName());
+      this.plotAlgoResults();
       return;
     }
 

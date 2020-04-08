@@ -50,9 +50,12 @@ class TextParameterInput extends ParameterInput {
   }
 }
 
-class ClickParameterInput extends ParameterInput {
-  constructor(label, initialValue, domain, onValueChanged, containerId) {
-    super(label, domain, onValueChanged, containerId);
+class ClickParameterInput {
+  constructor(onValueChanged, containerId) {
+    this.container = d3.select(containerId).on("click", function() {
+      const value = d3.mouse(this);
+      onValueChanged(value);
+    });
   }
 }
 
@@ -67,6 +70,10 @@ function parameterInputFactory(label, inputType, initialValue, domain, onValueCh
 
   if (inputType === inputTypes.text) {
     return new TextParameterInput(label, initialValue, domain, onValueChanged, containerId);
+  }
+
+  if (inputType === inputTypes.click) {
+    return new ClickParameterInput(onValueChanged, containerId);
   }
 
   // TODO, implement class ClickParameterInput and delete test_graph_plot.js and test_contour_plot.js
