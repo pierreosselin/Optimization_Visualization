@@ -4,7 +4,7 @@ function test_sgd(h, eps, nlim) {
   const square = (x) => x ** 2;
   const pow3 = (x) => x ** 3;
   const sin3 = (x) => -(1.4 -3*x)*Math.sin(18*x)
-  const algorithms = ["gd", "gdM", "gdNM", "RMSProp"];
+  const algorithms = ["gd", "gdM", "gdNM", "RMSProp", "Adam", "BFGS", "Newton"];
   const objectives = {"square": {obj: square, x_ini: 1.5, delta: {value: 0.8, step : 0.05}, xDomain: [-2,2]},
                       "pow3": {obj: pow3, x_ini: 0.7, delta: {value: 0.1, step : 0.01}, xDomain: [-1,1]},
                       "sin3": {obj: sin3, x_ini: 1, delta: {value: 0.01, step : 0.001}, xDomain: [0,1.2]}};
@@ -102,8 +102,8 @@ function test_sgd(h, eps, nlim) {
   }
 
   function onAlgorithmChanged(myalgorithm) {
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     if (myalgorithm == "gd") {
       alg = new GradientDescent(objective,x_ini, h,step)
     } else if (myalgorithm == "gdM"){
@@ -114,6 +114,10 @@ function test_sgd(h, eps, nlim) {
       alg = new RMSProp(objective,x_ini, h,step);
     } else if (myalgorithm == "Adam"){
       alg = new Adam(objective,x_ini, h,step);
+    } else if (myalgorithm == "BFGS"){
+      alg = new Adam(objective,x_ini, h,step);
+    } else if (myalgorithm == "Newton"){
+      alg = new DampedNewton(objective,x_ini, h,step);
     }
     alg.optimize(eps, nlim);
     graphPlot
@@ -122,8 +126,8 @@ function test_sgd(h, eps, nlim) {
 
   function changeXini(val) {
     x_ini = [val];
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     alg.setXini(x_ini);
     alg.optimize(eps, nlim);
     graphPlot
@@ -132,8 +136,8 @@ function test_sgd(h, eps, nlim) {
 
   function onStepChanged() {
     step = this.value
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
     alg.setStep(step);
     alg.optimize(eps, nlim);
     graphPlot

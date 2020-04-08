@@ -62,25 +62,73 @@ class AlgorithmFirstOrder extends Algorithm{
 
   setObj(new_var){
     this.objective = new_var
-    this.x = this.x_ini.map(x => x);
     this.reinitialize();
   }
 
   setXini(new_var){
     this.x_ini = new_var.map(val => parseFloat(val));
-    this.x = this.x_ini.map(x => x);
     this.reinitialize();
   }
 
   setStep(new_var){
     this.delta = new_var;
-    this.x = this.x_ini.map(x => x);
     this.reinitialize();
   }
 
   reinitialize() {
+    this.x = this.x_ini.map(x => x);
     this.path = [];
   }
+}
+
+/** Class AlgorithmSecondOrder implements the following interface
+* @method hessian : Approximate the Hessian our implementation only works for 1 element and 2 element arrays
+*/
+class AlgorithmSecondOrder extends AlgorithmFirstOrder{
+  constructor(objective, x_ini, h = 0.001, delta = 0.1){
+    super(objective, x_ini, h = 0.001, delta = 0.1);
+  }
+
+  hessian(arr) {
+    let n = arr.length;
+    if (n == 1){
+      return [[(- 1 * this.objective([arr[0] + 2*this.h]) + 16 * this.objective([arr[0] + this.h]) - 30 * this.objective(arr) + 16 * this.objective([arr[0] - this.h]) - this.objective([arr[0] - 2*this.h]))/(12 * this.h ** 2)]];
+      }
+      let hess = 0;
+      const x_hPP = arr.map(el => el);
+      const x_hP = arr.map(el => el);
+      const x_hM = arr.map(el => el);
+      const x_hMM = arr.map(el => el);
+
+      let diag = arr.map((el,i) => {
+        x_hPP[i] = el + 2*this.h;
+        x_hP[i] = el + this.h;
+        x_hM[i] = el - this.h;
+        x_hMM[i] = el - 2*this.h;
+        hess = (-this.objective(x_hPP) + 16 * this.objective(x_hP) - 30 * this.objective(arr) + 16 * this.objective(x_hM) - this.objective(x_hMM)) / (12 * this.h ** 2);
+        x_hPP[i] = el;
+        x_hP[i] = el;
+        x_hM[i] = el;
+        x_hMM[i] = el;
+        return hess
+      });
+
+      x_hPP[0] = arr[0] + this.h;
+      x_hPP[1] = arr[1] + this.h;
+
+      x_hP[0] = arr[0] + this.h;
+      x_hP[1] = arr[1] - this.h;
+
+      x_hM[0] = arr[0] - this.h;
+      x_hM[1] = arr[1] + this.h;
+
+      x_hMM[0] = arr[0] - this.h;
+      x_hMM[1] = arr[1] - this.h;
+
+      let corner = (this.objective(x_hPP) - this.objective(x_hP) - this.objective(x_hM) + this.objective(x_hMM)) / (4 * this.h ** 2)
+
+      return [[diag[0], corner], [corner, diag[1]]]
+    }
 }
 
 /** Simple Gradient Descent algorithm must do the following task
@@ -125,8 +173,9 @@ class GradientDescentMomentum extends AlgorithmFirstOrder{
   }
 
   reinitialize() {
-    this.path = []
-    this.currentgrad = this.x_ini.map(x => 0)
+    this.path = [];
+    this.x = this.x_ini.map(x => x);
+    this.currentgrad = this.x_ini.map(x => 0);
   }
 }
 
@@ -154,8 +203,9 @@ class GradientDescentMomentumNesterov extends AlgorithmFirstOrder{
   }
 
   reinitialize() {
-    this.path = []
-    this.currentgrad = this.x_ini.map(x => 0)
+    this.path = [];
+    this.x = this.x_ini.map(x => x);
+    this.currentgrad = this.x_ini.map(x => 0);
   }
 }
 
@@ -184,8 +234,9 @@ class RMSProp extends AlgorithmFirstOrder{
   }
 
   reinitialize() {
-    this.path = []
-    this.currentSquareGradientAverage = this.x_ini.map(x => 0)
+    this.path = [];
+    this.x = this.x_ini.map(x => x);
+    this.currentSquareGradientAverage = this.x_ini.map(x => 0);
   }
 }
 
@@ -205,16 +256,17 @@ class Adam extends AlgorithmFirstOrder{
   }
 
   one_step() {
+    this.nStep = this.nStep + 1;
     let gradient = this.differentiate(this.x);
     this.currentGradientAverage = this.currentGradientAverage.map((e,i) => this.beta1 * e + (1 - this.beta1) * gradient[i]);
     this.currentSquareGradientAverage = this.currentSquareGradientAverage.map((e,i) => this.beta2 * e + (1-this.beta2) * (gradient[i] ** 2));
 
-    let firstCorrectionTerm = 1 - this.beta1 ** this.nStep;
-    let secondCorrectionTerm = 1 - this.beta2 ** this.nStep;
+    let firstCorrectionTerm = 1 - (this.beta1 ** this.nStep);
+    let secondCorrectionTerm = 1 - (this.beta2 ** this.nStep);
     let currentFirstMoment = this.currentGradientAverage.map(e => e/firstCorrectionTerm);
-    let currentSecondMoment = this.currentSquareGradientAverage.map(e => e/firstCorrectionTerm);
+    let currentSecondMoment = this.currentSquareGradientAverage.map(e => e/secondCorrectionTerm);
 
-    gradient = this.currentGradientAverage.map((e,i) => (this.delta * e) / (Math.sqrt(this.currentSquareGradientAverage[i]) + this.epsilon));
+    gradient = currentFirstMoment.map((e,i) => (this.delta * e) / (Math.sqrt(currentSecondMoment[i]) + this.epsilon));
     let norm = 0;
     for (let i = 0, len = gradient.length; i < len; i++) {
       this.x[i] = this.x[i] - gradient[i];
@@ -225,8 +277,68 @@ class Adam extends AlgorithmFirstOrder{
 
   reinitialize() {
     this.path = [];
+    this.x = this.x_ini.map(x => x);
     this.currentGradientAverage = this.x_ini.map(x => 0);
     this.currentSquareGradientAverage = this.x_ini.map(x => 0);
     this.nStep = 0;
+  }
+}
+
+/** BFGS implements the following interface
+* @method one_step : One step towards the bfgs direction.
+* @method reinitialize : Reinitialize quantity that are proper the the algorithm.
+*/
+class BFGS extends AlgorithmFirstOrder{
+  constructor(objective, x_ini, h = 0.00001, delta = 0.1) {
+    super(objective, x_ini, h, delta);
+    this.x_ini = array2vec(this.x_ini);
+    this.x = array2vec(this.x);
+    this.currentGradient = this.differentiate(this.x);
+    this.currentHessian = eye(x_ini.length);
+  }
+
+  one_step() {
+    let direction = solve(this.currentHessian, this.currentGradient.map(el => -1 * this.delta * el ));
+    this.x = add(this.x, direction);
+    let next_gradient = this.differentiate(this.x);
+    let y_k = sub(next_gradient, this.currentGradient);
+    let firstQuantity = mul(direction, y_k);
+    let secondQuantity = mul(this.currentHessian, direction);
+    let thirdQuantity = mul(direction, secondQuantity);
+    this.currentHessian = add(this.currentHessian, sub(mul(y_k, transpose(y_k.map(el => el/firstQuantity))), mul(secondQuantity, transpose(secondQuantity.map(el => el / thirdQuantity)))));
+    let normGrad = norm(this.currentGradient);
+    this.currentGradient = next_gradient.map(el => el);
+    return normGrad
+  }
+
+  reinitialize() {
+    this.path = [];
+    this.x = this.x_ini.map(x => x);
+    this.currentGradient = this.differentiate(this.x);
+    this.currentHessian = eye(this.x_ini.length);
+  }
+}
+
+/** Newton Descent
+* @method one_step : Perform Newton Step.
+*/
+class DampedNewton extends AlgorithmSecondOrder{
+  constructor(objective, x_ini, h = 0.00001, delta = 0.1, epsilon = 0.000001) {
+    super(objective, x_ini, h, delta);
+    this.x_ini = array2vec(this.x_ini);
+    this.x = array2vec(this.x);
+    this.epsilon = epsilon;
+  }
+  one_step() {
+    let hess = array2mat(this.hessian(this.x));
+    let eigdec = eigs(hess, this.x_ini.length);
+    let eigval = eigdec.V;
+    let eigvec = eigdec.U;
+    eigval = eigval.map(el => Math.max(Math.abs(el), this.epsilon));
+    hess = mul(eigvec, mul(diag(eigval), transpose(eigvec)));
+    let gradient = this.differentiate(this.x);
+    let direction = solve(hess, mul(-1, gradient));
+    this.x = add(this.x, direction.map(el => el * this.delta));
+    return norm(gradient);
   }
 }

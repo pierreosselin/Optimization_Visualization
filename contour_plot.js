@@ -112,49 +112,60 @@ class ContourPlot {
    * @param points - list of points.
    *  Point: [x, y] where x and y are coordinates in xDomain and yDomain.
    */
-  addLine2(points) {
+  addLine(points) {
     const coords = points.map(([x, y]) => [this.xScale(x), this.yScale(y)]);
 
-    const transitionDuration = index => Math.round(2000 / index);
+    const transitionDuration = index => Math.round(350 / index);
     const previousTransitionsDuration = index => [...Array(index - 1).keys()]
       .reduce((acc, current) => acc + transitionDuration(current + 1), 0);
 
     for (let i = 1 ; i < coords.length ; i++) {
-      const transition = d3.transition()
+      const transitionPath = d3.transition()
         .ease(d3.easeLinear)
         .delay(previousTransitionsDuration(i))
         .duration(transitionDuration(i));
 
+      const transitionDot = d3.transition()
+        .ease(d3.easeLinear)
+        .delay(previousTransitionsDuration(i))
+        .duration(0);
+
       this.svg.append("circle")
         .attr('r', 0)
+        .attr('id', 'dot')
         .style("fill", "green")
         .attr("transform", `translate(${coords[i - 1][0]}, ${coords[i - 1][1]})`)
-        .transition(transition)
+        .transition(transitionDot)
         .attr('r', 3);
 
       this.svg.append("line")
+        .attr('id', 'path')
         .attr("x1", coords[i - 1][0])
         .attr("y1", coords[i - 1][1])
         .attr("x2", coords[i - 1][0])
         .attr("y2", coords[i - 1][1])
         .attr("stroke", "green")
         .style("fill","none")
-        .transition(transition)
+        .transition(transitionPath)
         .attr("x2", coords[i][0])
         .attr("y2", coords[i][1]);
     }
 
     this.svg.append("circle")
       .attr('r', 0)
+      .attr('id', 'dot')
       .style("fill", "green")
       .attr("transform", `translate(${coords[coords.length - 1][0]}, ${coords[coords.length - 1][1]})`)
-      .transition(d3.transition().delay(previousTransitionsDuration(coords.length)))
+      .transition(d3.transition().delay(previousTransitionsDuration(coords.length)).duration(0))
       .attr('r', 3);
 
     return this;
   }
 
-  addLine(points) {
+  /**
+  * @deprecated - method without animation.
+  **/
+  addLine2(points) {
     const line = d3.line()(points.map(([x, y]) => [this.xScale(x), this.yScale(y)]));
 
     this.svg
