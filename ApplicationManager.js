@@ -79,7 +79,7 @@ class ApplicationManager {
     this.algoParams = this.get_Initialized_Params(algoName);
   }
 
-  changeParamsAlgorithms(algoName) {
+  changeAlgorithmParams(algoName) {
     let new_algoParams = this.get_Initialized_Params(algoName);
     for (let key in new_algoParams) {
       if (key in this.algoParams){
