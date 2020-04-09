@@ -37,11 +37,12 @@ class DropdownParameterInput extends ParameterInput {
 class TextParameterInput extends ParameterInput {
   constructor(label, initialValue, domain, onValueChanged, containerId) {
     super(label, domain, onValueChanged, containerId);
+    console.log(label);
     this.input = this.container
       .append('input')
       .attr("type", "number")
       .attr("value", initialValue)
-      .attr("step", 10 ** precision(initialValue));
+      .attr("step", precision(initialValue));
 
     this.input.on("change", () => {
       const value = this.input.property("value");
@@ -79,19 +80,20 @@ function parameterInputFactory(label, inputType, initialValue, domain, onValueCh
 }
 
 function precision(val) {
-  let precision = 0;
+  let final = 1;
   let nb = val;
   if (Math.floor(val) === val) {
     do {
       nb = nb / 10;
-      precision = precision+1;
+      final = final * 10;
     } while (Math.floor(nb) === nb);
-    return precision - 1;
+    return final / 10;
   } else {
     do {
       nb = nb * 10;
-      precision = precision - 1;
+      final = final / 10;
     } while (!(Math.floor(nb) === nb));
-    return precision;
+    console.log(precision);
+    return final;
   }
 }
