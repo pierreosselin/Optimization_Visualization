@@ -33,7 +33,9 @@ class ApplicationManager {
 
     this.paramButtons = {};
     this.resetParametersButtons();
-
+    this.plotFunctionAndAxis();
+    this.plotAlgoResults();
+    this.resetMouse();
     this.xiniclick = parameterInputFactory(
       null,
       inputTypes.click,
@@ -42,25 +44,6 @@ class ApplicationManager {
       xini => this.setParam(paramNames.x_ini, xini),
       "#svg1"
     );
-
-    this.plotFunctionAndAxis();
-    this.plotAlgoResults();
-
-    if (plotType === plotTypes.plot_1D) {
-      let circle_xini = plot.svg
-        .append("circle")
-        .attr('r', 4)
-        .style("fill", "black");
-      let obj = this.algo.objective;
-      let plt = this.plot;
-      this.plot.svg
-        .on("mousemove", function () {
-          const mousex = d3.mouse(d3.event.target)[0];
-          circle_xini
-            .attr('cx', mousex)
-            .attr('cy', plt.yScale(obj([graphPlot.xScale.invert(mousex)])))
-        });
-    }
   }
 
 
@@ -170,6 +153,7 @@ class ApplicationManager {
       this.plotFunctionAndAxis();
       this.plotAlgoResults();
       this.resetParametersButtons();
+      this.resetMouse();
       return;
     }
 
@@ -212,5 +196,23 @@ class ApplicationManager {
         this.paramButtons[param] = parameterInputFactory(param, inputType, initValue, domain, onValueChanged, "#algoParamsButtonSpace")
       }
     })
+  }
+
+  resetMouse() {
+    if (this.plot.getType() === plotTypes.plot_1D) {
+      let obj = this.algo.objective;
+      let plt = this.plot;
+      let circle_xini = plt.svg
+        .append("circle")
+        .attr('r', 4)
+        .style("fill", "black");
+      plt.svg
+        .on("mousemove", function () {
+          const mousex = d3.mouse(d3.event.target)[0];
+          circle_xini
+            .attr('cx', mousex)
+            .attr('cy', plt.yScale(obj([graphPlot.xScale.invert(mousex)])))
+        });
+    }
   }
 }
