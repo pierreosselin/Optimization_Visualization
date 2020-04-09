@@ -33,7 +33,6 @@ class AlgorithmFirstOrder extends Algorithm{
     this.x_ini = params[paramNames.x_ini];
     this.x = this.x_ini.map(x => x);
     this.h = parseFloat(params[paramNames.h]);
-    console.log(this.h);
     this.delta = parseFloat(params[paramNames.delta]);
   }
 
@@ -45,9 +44,6 @@ class AlgorithmFirstOrder extends Algorithm{
       x_hP[i] = el + this.h;
       x_hM[i] = el - this.h;
       gradient = ((this.objective(x_hP) - this.objective(x_hM)) / (2*this.h));
-      console.log("el", el)
-      console.log("x_hP",x_hP)
-      console.log("x_hM",x_hM)
       x_hP[i] = el;
       x_hM[i] = el;
       return gradient;
