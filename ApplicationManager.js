@@ -44,7 +44,8 @@ class ApplicationManager {
     );
 
     if (plotType === plotTypes.plot_1D) {
-      console.log("lol")
+      this.plot.svg
+        .on("mousemove", mouseAction)
     }
 
     this.plotFunctionAndAxis();
