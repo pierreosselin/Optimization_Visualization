@@ -25,9 +25,6 @@ class Algorithm {
 /** Mother class First Order algorithm must do the following task
 * @method differentiate : Approximate the Gradient
 * @method optimize : optimize the algorithm
-* @method setObj : set objective
-* @method setXini : set x_ini
-* @method setStep : Set the step
 */
 class AlgorithmFirstOrder extends Algorithm{
   constructor(name, params){
@@ -35,8 +32,9 @@ class AlgorithmFirstOrder extends Algorithm{
     this.objective = params[paramNames.objectiveFunction];
     this.x_ini = params[paramNames.x_ini];
     this.x = this.x_ini.map(x => x);
-    this.h = params[paramNames.h];
-    this.delta = params[paramNames.delta];
+    this.h = parseFloat(params[paramNames.h]);
+    console.log(this.h);
+    this.delta = parseFloat(params[paramNames.delta]);
   }
 
   differentiate(arr) {
@@ -47,6 +45,9 @@ class AlgorithmFirstOrder extends Algorithm{
       x_hP[i] = el + this.h;
       x_hM[i] = el - this.h;
       gradient = ((this.objective(x_hP) - this.objective(x_hM)) / (2*this.h));
+      console.log("el", el)
+      console.log("x_hP",x_hP)
+      console.log("x_hM",x_hM)
       x_hP[i] = el;
       x_hM[i] = el;
       return gradient;
@@ -140,7 +141,7 @@ class GradientDescent extends AlgorithmFirstOrder{
 class GradientDescentMomentum extends AlgorithmFirstOrder{
   constructor(params) {
     super(algorithmNames.gradientDescentWithMomentum, params);
-    this.momentum = params[paramNames.momentum];
+    this.momentum = parseFloat(params[paramNames.momentum]);
     this.currentgrad = this.x_ini.map(() => 0);
   }
 
@@ -162,7 +163,7 @@ class GradientDescentMomentum extends AlgorithmFirstOrder{
 class GradientDescentMomentumNesterov extends AlgorithmFirstOrder{
   constructor(params) {
     super(algorithmNames.gradientDescentMomentumNesterov, params);
-    this.momentum = params[paramNames.momentum];
+    this.momentum = parseFloat(params[paramNames.momentum]);
     this.currentgrad = this.x_ini.map(() => 0);
   }
 
@@ -185,8 +186,8 @@ class GradientDescentMomentumNesterov extends AlgorithmFirstOrder{
 class RMSProp extends AlgorithmFirstOrder{
   constructor(params) {
     super(algorithmNames.RMSProp, params);
-    this.rho = params[paramNames.rho];
-    this.epsilon = params[paramNames.epsilon];
+    this.rho = parseFloat(params[paramNames.rho]);
+    this.epsilon = parseFloat(params[paramNames.epsilon]);
     this.currentSquareGradientAverage = this.x_ini.map(() => 0);
   }
 
@@ -209,9 +210,9 @@ class RMSProp extends AlgorithmFirstOrder{
 class Adam extends AlgorithmFirstOrder{
   constructor(params) {
     super(algorithmNames.adam, params);
-    this.beta1 = params[paramNames.beta1];
-    this.beta2 = params[paramNames.beta2];
-    this.epsilon = params[paramNames.epsilon];
+    this.beta1 = parseFloat(params[paramNames.beta1]);
+    this.beta2 = parseFloat(params[paramNames.beta2]);
+    this.epsilon = parseFloat(params[paramNames.epsilon]);
     this.currentGradientAverage = this.x_ini.map(() => 0);
     this.currentSquareGradientAverage = this.x_ini.map(() => 0);
     this.nStep = 0;
@@ -270,7 +271,7 @@ class BFGS extends AlgorithmFirstOrder{
 class DampedNewton extends AlgorithmSecondOrder{
   constructor(params) {
     super(algorithmNames.newton, params);
-    this.epsilon = params[paramNames.epsilon];
+    this.epsilon = parseFloat(params[paramNames.epsilon]);
     this.x_ini = array2vec(this.x_ini);
     this.x = array2vec(this.x);
   }
