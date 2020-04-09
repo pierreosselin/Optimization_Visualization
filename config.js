@@ -23,8 +23,8 @@ const paramNames = {
   momentum: "Descent momentum",
   rho: "Rho",
   epsilon: "Epsilon",
-  beta1: "Beta1",
-  beta2: "Beta2",
+  beta1 : "Beta1",
+  beta2 : "Beta2",
   nlim: "Maximum number of iterations",
   normLim: "Norm value stopping criterion",
 

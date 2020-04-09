@@ -41,7 +41,7 @@ class TextParameterInput extends ParameterInput {
       .append('input')
       .attr("type", "number")
       .attr("value", initialValue)
-      .attr("step", 0.1);
+      .attr("step", 10 ** precision(initialValue));
 
     this.input.on("change", () => {
       const value = this.input.property("value");
@@ -76,4 +76,22 @@ function parameterInputFactory(label, inputType, initialValue, domain, onValueCh
     return new ClickParameterInput(onValueChanged, containerId);
   }
   return;
+}
+
+function precision(val) {
+  let precision = 0;
+  let nb = val;
+  if (Math.floor(val) === val) {
+    do {
+      nb = nb / 10;
+      precision = precision+1;
+    } while (Math.floor(nb) === nb);
+    return precision - 1;
+  } else {
+    do {
+      nb = nb * 10;
+      precision = precision - 1;
+    } while (!(Math.floor(nb) === nb));
+    return precision;
+  }
 }

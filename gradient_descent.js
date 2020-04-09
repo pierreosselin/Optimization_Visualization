@@ -25,9 +25,6 @@ class Algorithm {
 /** Mother class First Order algorithm must do the following task
 * @method differentiate : Approximate the Gradient
 * @method optimize : optimize the algorithm
-* @method setObj : set objective
-* @method setXini : set x_ini
-* @method setStep : Set the step
 */
 class AlgorithmFirstOrder extends Algorithm{
   constructor(name, params){
@@ -56,13 +53,11 @@ class AlgorithmFirstOrder extends Algorithm{
   optimize(){
     let norm = 0;
     let steps = 0;
-    let domainFlag = true;
     do {
       this.path.push(this.x.map(x => x));
       norm = (this.one_step())**(1/2);
       steps = steps + 1;
-      //domainFlag = this.x.map((e,i) => (e >= domain[i][0]) && (e <= domain[i][1])).reduce((a,b) => a && b, true);
-    } while (norm > this.params[paramNames.normLim] && steps < this.params[paramNames.nlim] && domainFlag);
+    } while (norm > this.params[paramNames.normLim] && steps < this.params[paramNames.nlim]);
     return this.path;
   }
 }
