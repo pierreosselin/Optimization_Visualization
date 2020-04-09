@@ -43,6 +43,10 @@ class ApplicationManager {
       "#svg1"
     );
 
+    if (plotType === plotTypes.plot_1D) {
+      console.log("lol")
+    }
+
     this.plotFunctionAndAxis();
     this.plotAlgoResults();
   }
@@ -174,7 +178,7 @@ class ApplicationManager {
     if (paramsConfig[paramName].input_type === inputTypes.dropdown) {
       this.algoParams[paramName] = value.value;
     } else {
-      this.algoParams[paramName] = value;
+      this.algoParams[paramName] = parseFloat(value);
     }
     this.resetAlgo(this.algo.getName());
     this.plotAlgoResults();
