@@ -7,6 +7,7 @@ class ContourPlot {
    * @param height - pixels height of the plot.
    */
   constructor(svg, xDomain, yDomain, width, height) {
+    this.type = plotTypes.contour_plot;
     this.svg = svg;
     this.xScale = d3.scaleLinear(xDomain, [0, width]);
     this.yScale = d3.scaleLinear(yDomain, [height, 0]);
@@ -106,13 +107,12 @@ class ContourPlot {
 
     return this;
   }
-
   /**
    * Draw line from points coordinates.
    * @param points - list of points.
    *  Point: [x, y] where x and y are coordinates in xDomain and yDomain.
    */
-  addLine(points) {
+   addLine(points) {
     const coords = points.map(([x, y]) => [this.xScale(x), this.yScale(y)]);
 
     const transitionDuration = index => Math.round(350 / index);
@@ -162,9 +162,11 @@ class ContourPlot {
     return this;
   }
 
-  /**
-  * @deprecated - method without animation.
-  **/
+  /** Deprecated no animation
+   * Draw line from points coordinates.
+   * @param points - list of points.
+   *  Point: [x, y] where x and y are coordinates in xDomain and yDomain.
+   */
   addLine2(points) {
     const line = d3.line()(points.map(([x, y]) => [this.xScale(x), this.yScale(y)]));
 
@@ -194,4 +196,18 @@ class ContourPlot {
 
     return this;
   }
+
+  clearLines() {
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
+  }
+
+  clearAll() {
+    d3.select("#svg1").selectAll("*").remove();
+  }
+
+  getType = () => this.type;
+
+  setXDomain = (xDomain) => this.xScale = d3.scaleLinear(xDomain, [0, this.width]);
+  setYDomain = (yDomain) => this.yScale = d3.scaleLinear(yDomain, [this.height, 0]);
 }

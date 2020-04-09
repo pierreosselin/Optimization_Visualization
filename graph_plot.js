@@ -6,6 +6,7 @@ class GraphPlot {
    * @param height - pixels height of the plot.
    */
   constructor(svg, xDomain, width, height) {
+    this.type = plotTypes.plot_1D;
     this.svg = svg;
     this.xScale = d3.scaleLinear(xDomain, [0, width]);
     this.width = width;
@@ -166,4 +167,18 @@ class GraphPlot {
 
     return this;
   }
+
+  clearLines() {
+    d3.select("#path").remove();
+    d3.select("#dot").remove();
+  }
+
+  clearAll() {
+    d3.select("#svg1").selectAll("*").remove();
+  }
+
+  getType = () => this.type;
+
+  setXDomain = xDomain => this.xScale = d3.scaleLinear(xDomain, [0, this.width]);
+  setYDomain = () => {};
 }
