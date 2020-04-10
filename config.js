@@ -156,6 +156,7 @@ const paramsConfig = {
         domain: [
           { name: "square", value: ([x, y]) => x ** 2 + y ** 2 + (x + y) ** 2 },
           { name: "rosenbrock", value: ([x,y]) => (1-x)**2  + 100*(y - x**2)**2 + 1 },
+          { name: "rastrigin", value: ([x,y]) => 1 + 10 * (20 + x**2 + y**2 - 10 * Math.cos(2*(Math.PI)*x) - 10 * Math.cos(2*(Math.PI)*y))},
         ],
       }
     },
@@ -182,7 +183,7 @@ const paramsConfig = {
         domain: value => true,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: [-30, 175], rosenbrock: [2.5, -1.5] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [-30, 175], rosenbrock: [2.5, -1.5], rastrigin: [2.5, -1.5] }[objective]),
         domain: value => true,
       }
     },
@@ -208,7 +209,7 @@ const paramsConfig = {
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: 0.1, rosenbrock: 0.0001 }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: 0.1, rosenbrock: 0.0001, rastrigin: 0.001 }[objective]),
         domain: value => value > 0,
       }
     }
@@ -312,7 +313,7 @@ const paramsConfig = {
         domain: () => true,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: [-200,200], rosenbrock: [-2,3] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [-200,200], rosenbrock: [-2,3], rastrigin: [-5.12, 5.12] }[objective]),
         domain: () => true,
       }
     }
@@ -325,7 +326,7 @@ const paramsConfig = {
         domain: () => false,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: [-200,200], rosenbrock: [-2,3] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [-200,200], rosenbrock: [-2,3], rastrigin: [-5.12, 5.12] }[objective]),
         domain: () => true,
       }
     }
