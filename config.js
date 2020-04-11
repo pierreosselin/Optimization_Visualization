@@ -156,7 +156,15 @@ const paramsConfig = {
         domain: [
           { name: "square", value: ([x, y]) => x ** 2 + y ** 2 + (x + y) ** 2 },
           { name: "rosenbrock", value: ([x,y]) => (1-x)**2  + 100*(y - x**2)**2 + 1 },
-          { name: "rastrigin", value: ([x,y]) => 1 + 10 * (20 + x**2 + y**2 - 10 * Math.cos(2*(Math.PI)*x) - 10 * Math.cos(2*(Math.PI)*y))},
+          { name: "rastrigin", value: ([x,y]) => 1 + 50 * (20 + x**2 + y**2 - 10 * Math.cos(2*(Math.PI)*x) - 10 * Math.cos(2*(Math.PI)*y))},
+          { name: "ackley", value: ([x,y]) => -20 * Math.exp(-0.2 * Math.sqrt(0.5*(x**2 + y**2))) - Math.exp(0.5 * (Math.cos(2*Math.PI*x) + Math.cos(2*Math.PI*y))) + Math.exp(1) + 20},
+          { name: "goldstein", value: ([x,y]) => (1 + ((x + y + 1)**2) * (19 - 14 * x + 3 * x ** 2 - 14 * y + 6 * x * y + 3 * y ** 2)) * (30 + ((2 * x - 3 * y) ** 2) * (18 - 32 * x + 12 * x ** 2 + 48 * y - 36 * x * y + 27 * y **2))},
+          { name: "himmelblau", value: ([x,y]) => (x ** 2 + y - 11) ** 2 + (x + y ** 2 - 7) ** 2},
+          { name: "camel", value: ([x,y]) => 2 * x ** 2 - 1.05 * x ** 4 + (1/6) * x ** 6 + x * y + y ** 2},
+          { name: "easom", value: ([x,y]) =>  10 - 10 * Math.cos(x) * Math.cos(y) * Math.exp(-((x - Math.PI) ** 2 + (y - Math.PI) ** 2))},
+          { name: "eggholder", value: ([x,y]) =>  960 -(y + 47) * Math.sin(Math.sqrt(Math.abs(x / 2 + (y + 47)))) - x * Math.sin(Math.sqrt(Math.abs(x - (y + 47))))},
+          { name: "mccormick", value: ([x,y]) =>  2 + Math.sin(x + y) + (x - y) ** 2 - 1.5 * x + 2.5 * y + 1},
+          { name: "styblinski", value: ([x,y]) => 80 + 0.5 * (x ** 4 - 16 * x ** 2 + 5 * x + y ** 4 - 16 * y ** 2 + 5 * y)},
         ],
       }
     },
@@ -183,7 +191,17 @@ const paramsConfig = {
         domain: value => true,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: [-30, 175], rosenbrock: [2.5, -1.5], rastrigin: [2.5, -1.5] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [-30, 175],
+          rosenbrock: [2.5, -1.5],
+          rastrigin: [2.5, -1.5],
+          ackley: [2.5, -1.5],
+          goldstein: [2.5, -1.5],
+          himmelblau: [2.5, -1.5],
+          camel: [2.5, -1.5],
+          easom: [2.5, -1.5],
+          eggholder: [2.5, -1.5],
+          mccormick: [2.5, -1.5],
+          styblinski: [2.5, -1.5]}[objective]),
         domain: value => true,
       }
     },
@@ -209,7 +227,17 @@ const paramsConfig = {
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: 0.1, rosenbrock: 0.0001, rastrigin: 0.001 }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: 0.1,
+          rosenbrock: 0.0001,
+          rastrigin: 0.001,
+          ackley: 0.001,
+          goldstein: 0.001,
+          himmelblau: 0.001,
+          camel: 0.001,
+          easom: 0.001,
+          eggholder: 0.001,
+          mccormick: 0.001,
+          styblinski: 0.001}[objective]),
         domain: value => value > 0,
       }
     }
@@ -313,7 +341,17 @@ const paramsConfig = {
         domain: () => true,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: [-200,200], rosenbrock: [-2,3], rastrigin: [-5.12, 5.12] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [-200,200],
+          rosenbrock: [-2,3],
+          rastrigin: [-5.12, 5.12],
+          ackley: [-5, 5],
+          goldstein: [-2, 2],
+          himmelblau: [-5, 5],
+          camel: [-5, 5],
+          easom: [-10, 10],
+          eggholder: [-512, 512],
+          mccormick: [-1.5, 4],
+          styblinski: [-5, 5]}[objective]),
         domain: () => true,
       }
     }
@@ -326,7 +364,17 @@ const paramsConfig = {
         domain: () => false,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: (algorithm, objective) => ({ square: [-200,200], rosenbrock: [-2,3], rastrigin: [-5.12, 5.12] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [-200,200],
+          rosenbrock: [-2,3],
+          rastrigin: [-5.12, 5.12],
+          ackley: [-5, 5],
+          goldstein: [-2, 2],
+          himmelblau: [-5, 5],
+          camel: [-5, 5],
+          easom: [-10, 10],
+          eggholder: [-512, 512],
+          mccormick: [-3, 4],
+          styblinski: [-5, 5]}[objective]),
         domain: () => true,
       }
     }
