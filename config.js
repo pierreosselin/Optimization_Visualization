@@ -387,7 +387,7 @@ const paramsConfig = {
         domain: () => false,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: () => [...Array(19).keys()].map(i => Math.pow(2, i + 1)),
+        get_init_value: () => [...Array(40).keys()].map(i => Math.pow(1.4, i + 1)),
         domain: () => true,
       }
     }
