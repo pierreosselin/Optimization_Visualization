@@ -104,7 +104,7 @@ class ApplicationManager {
     }
 
     if (this.plot.getType() === plotTypes.contour_plot) {
-      const thresholds = paramsConfig[paramNames.threshold].values[this.plot.getType()].get_init_value();
+      const thresholds = paramsConfig[paramNames.threshold].values[this.plot.getType()].get_init_value(null, this.objectiveFunction.name);
       const interpolation = paramsConfig[paramNames.interpolation].values[this.plot.getType()]
         .get_init_value(null, this.objectiveFunction.name).value;
       this.plot.draw(this.algoParams[paramNames.objectiveFunction], 4, thresholds, d3[interpolation])
