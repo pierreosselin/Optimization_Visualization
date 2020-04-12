@@ -155,6 +155,7 @@ const paramsConfig = {
         get_init_value: () => ({ name: "square", value: ([x, y]) => x ** 2 + y ** 2 + (x + y) ** 2 }),
         domain: [
           { name: "square", value: ([x, y]) => x ** 2 + y ** 2 + (x + y) ** 2 },
+          { name: "saddle", value: ([x,y]) => 2 + x**2 - y ** 2},
           { name: "rosenbrock", value: ([x,y]) => (1-x)**2  + 100*(y - x**2)**2 + 1},
           { name: "rastrigin", value: ([x,y]) => 1 + (20 + x**2 + y**2 - 10 * Math.cos(2*(Math.PI)*x) - 10 * Math.cos(2*(Math.PI)*y))},
           { name: "ackley", value: ([x,y]) => 1 - 20 * Math.exp(  -0.2 * Math.sqrt(0.5*(x**2 + y**2))) - Math.exp(0.5 * (Math.cos(2*Math.PI*x) + Math.cos(2*Math.PI*y))) + Math.exp(1) + 20},
@@ -192,6 +193,7 @@ const paramsConfig = {
       },
       [plotTypes.contour_plot]: {
         get_init_value: (algorithm, objective) => ({ square: [-30, 175],
+          saddle: [-0.5, 0.05],
           rosenbrock: [2.5, -1.5],
           rastrigin: [2.5, -1.5],
           ackley: [2.5, -1.5],
@@ -228,6 +230,7 @@ const paramsConfig = {
       },
       [plotTypes.contour_plot]: {
         get_init_value: (algorithm, objective) => ({ square: 0.1,
+          saddle: 0.01,
           rosenbrock: 0.0001,
           rastrigin: 0.001,
           ackley: 0.001,
@@ -324,11 +327,11 @@ const paramsConfig = {
     input_type: inputTypes.text,
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: () => 0.1,
+        get_init_value: () => 0.01,
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
-        get_init_value: () => 0.1,
+        get_init_value: () => 0.01,
         domain: value => value > 0,
       }
     }
@@ -342,6 +345,7 @@ const paramsConfig = {
       },
       [plotTypes.contour_plot]: {
         get_init_value: (algorithm, objective) => ({ square: [-200,200],
+          saddle: [-1,1],
           rosenbrock: [-2,3],
           rastrigin: [-5.12, 5.12],
           ackley: [-5, 5],
@@ -365,6 +369,7 @@ const paramsConfig = {
       },
       [plotTypes.contour_plot]: {
         get_init_value: (algorithm, objective) => ({ square: [-200,200],
+          saddle: [-1,1],
           rosenbrock: [-2,3],
           rastrigin: [-5.12, 5.12],
           ackley: [-5, 5],
@@ -388,6 +393,7 @@ const paramsConfig = {
       },
       [plotTypes.contour_plot]: {
         get_init_value: (algorithm, objective) => ({ square : [...Array(19).keys()].map(i => Math.pow(2, i+1)),
+          saddle : [...Array(19).keys()].map(i => Math.pow(1.09, i)),
           rosenbrock: [...Array(19).keys()].map(i => Math.pow(1.7, i + 1)),
           rastrigin: [...Array(19).keys()].map(i => Math.pow(1.3, i)),
           ackley: [...Array(19).keys()].map(i => Math.pow(1.17, i)),
