@@ -148,7 +148,11 @@ const paramsConfig = {
         domain: [
           { name: "square", value: x => x**2 },
           { name: "pow3", value: x => x**3 },
-          { name: "sin3", value: x => -(1.4 -3 * x)*Math.sin(18 * x) }
+          { name: "sin1", value: x => Math.sin(x) + Math.sin((10/3) * x)},
+          { name: "sin2", value: x => - Math.sin(2*x + 1) - 2 * Math.sin(3*x + 2) - 3 * Math.sin(4*x + 3) - 4 * Math.sin(5*x + 4) - 5 * Math.sin(6*x + 5) - 6 * Math.sin(7*x + 6)},
+          { name: "sin3", value: x => -(1.4 -3 * x)*Math.sin(18 * x) },
+          { name: "sin4", value: x => Math.sin(x) + Math.sin((10/3) * x) + Math.log(x) - 0.84 * x  + 3},
+          { name: "sin5", value: x => x*Math.sin(x) + x * Math.cos(2 * x)}
         ],
       },
       [plotTypes.contour_plot]: {
@@ -187,7 +191,13 @@ const paramsConfig = {
     input_type: inputTypes.click,
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: (algorithm, objective) => ({ square: [1.5], pow3: [0.7], sin3: [1] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [1.5],
+          pow3: [0.7],
+          sin1: [3],
+          sin2: [-7.2],
+          sin3: [1],
+          sin4: [3],
+          sin5: [6.5] }[objective]),
         // TODO implement domain validation
         domain: value => true,
       },
@@ -225,7 +235,13 @@ const paramsConfig = {
     input_type: inputTypes.text,
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: (algorithm, objective) => ({ square: 0.8, pow3: 0.1, sin3: 0.01 }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: 0.8,
+          pow3: 0.1,
+          sin1: 0.01,
+          sin2: 0.01,
+          sin3: 0.01,
+          sin4: 0.01,
+          sin5: 0.01 }[objective]),
         domain: value => value > 0,
       },
       [plotTypes.contour_plot]: {
@@ -340,7 +356,13 @@ const paramsConfig = {
     input_type: null, // not implemented yet
     values: {
       [plotTypes.plot_1D]: {
-        get_init_value: (algorithm, objective) => ({ square: [-2,2], pow3: [-1,1], sin3: [0,1.2] }[objective]),
+        get_init_value: (algorithm, objective) => ({ square: [-2,2],
+          pow3: [-1,1],
+          sin1: [2.7,6.5],
+          sin2: [-10,10],
+          sin3: [0,1.2],
+          sin4: [2.7,7.5],
+          sin5: [0,10] }[objective]),
         domain: () => true,
       },
       [plotTypes.contour_plot]: {
