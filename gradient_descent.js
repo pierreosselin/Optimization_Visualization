@@ -243,11 +243,25 @@ class BFGS extends AlgorithmFirstOrder{
     super(algorithmNames.bfgs, params);
     this.x_ini = array2vec(this.x_ini);
     this.x = array2vec(this.x);
+    this.n = this.x_ini.length
     this.currentGradient = this.differentiate(this.x);
-    this.currentHessian = eye(this.x_ini.length);
+    this.currentHessian = eye(this.n);
   }
 
   one_step() {
+    if (this.n === 1) {
+      let direction = -1 * this.delta * this.currentGradient / this.currentHessian;
+      this.x[0] = this.x[0] + direction;
+      let next_gradient = this.differentiate(this.x);
+      let y_k = next_gradient.map((el, i)=> el - this.currentGradient[i]);
+      let firstQuantity = direction * y_k;
+      let secondQuantity = this.currentHessian * direction;
+      let thirdQuantity = direction * secondQuantity;
+      this.currentHessian = this.currentHessian + ((y_k * y_k) / firstQuantity) - secondQuantity * (secondQuantity / thirdQuantity);
+      let normGrad = this.currentGradient ** 2;
+      this.currentGradient = next_gradient.map(el => el);
+      return normGrad
+    }
     let direction = solve(this.currentHessian, this.currentGradient.map(el => -1 * this.delta * el ));
     this.x = add(this.x, direction);
     let next_gradient = this.differentiate(this.x);
@@ -271,8 +285,17 @@ class DampedNewton extends AlgorithmSecondOrder{
     this.epsilon = params[paramNames.epsilon];
     this.x_ini = array2vec(this.x_ini);
     this.x = array2vec(this.x);
+    this.n = this.x_ini.length;
   }
   one_step() {
+    if (this.n === 1) {
+      let hess = this.hessian(this.x);
+      let eigval = Math.max(Math.abs(hess[0]),  this.epsilon);
+      let gradient = this.differentiate(this.x);
+      let direction = -1 * gradient / eigval ;
+      this.x[0] = this.x[0] + this.delta * direction;
+      return gradient ** 2;
+    }
     let hess = array2mat(this.hessian(this.x));
     let eigdec = eigs(hess, this.x_ini.length);
     let eigval = eigdec.V;

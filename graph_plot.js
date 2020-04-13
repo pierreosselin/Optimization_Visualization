@@ -169,8 +169,8 @@ class GraphPlot {
   }
 
   clearLines() {
-    d3.select("#path").remove();
-    d3.select("#dot").remove();
+    d3.selectAll("#path").remove();
+    d3.selectAll("#dot").remove();
   }
 
   clearAll() {

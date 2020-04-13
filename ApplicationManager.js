@@ -104,7 +104,7 @@ class ApplicationManager {
     }
 
     if (this.plot.getType() === plotTypes.contour_plot) {
-      const thresholds = paramsConfig[paramNames.threshold].values[this.plot.getType()].get_init_value();
+      const thresholds = paramsConfig[paramNames.threshold].values[this.plot.getType()].get_init_value(null, this.objectiveFunction.name);
       const interpolation = paramsConfig[paramNames.interpolation].values[this.plot.getType()]
         .get_init_value(null, this.objectiveFunction.name).value;
       this.plot.draw(this.algoParams[paramNames.objectiveFunction], 4, thresholds, d3[interpolation])
@@ -134,6 +134,7 @@ class ApplicationManager {
       this.changeAlgorithmParams(value.name, this.objectiveFunction.name, this.objectiveFunction.value);
       this.resetParametersButtons();
       this.plotAlgoResults();
+      this.plotDoc();
       return;
     }
 
@@ -154,6 +155,7 @@ class ApplicationManager {
       this.plotAlgoResults();
       this.resetParametersButtons();
       this.resetMouse();
+      this.plotDoc();
       return;
     }
 
@@ -214,5 +216,9 @@ class ApplicationManager {
             .attr('cy', plt.yScale(obj([graphPlot.xScale.invert(mousex)])))
         });
     }
+  }
+
+  plotDoc() {
+    documentationFactory(this.objectiveFunction.name, this.algoParams[paramNames.algorithmName]);
   }
 }

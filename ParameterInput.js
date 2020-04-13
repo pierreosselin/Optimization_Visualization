@@ -37,7 +37,6 @@ class DropdownParameterInput extends ParameterInput {
 class TextParameterInput extends ParameterInput {
   constructor(label, initialValue, domain, onValueChanged, containerId) {
     super(label, domain, onValueChanged, containerId);
-    console.log(label);
     this.input = this.container
       .append('input')
       .attr("type", "number")
@@ -93,7 +92,6 @@ function precision(val) {
       nb = nb * 10;
       final = final / 10;
     } while (!(Math.floor(nb) === nb));
-    console.log(precision);
     return final;
   }
 }
