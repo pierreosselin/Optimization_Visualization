@@ -1,8 +1,8 @@
-function documentationFactory(objFunction, algName) {
+function documentationFactory(objFunction, algName, plot_type) {
   let div = d3.select("#documentation").html("");
-  div.append("p").style("color", "black").style("font-size", "50px").text(objFunction);
+  div.append("p").style("color", "black").style("font-size", "50px").text(docConfig[plot_type][objFunction].name);
   let formulaP = div.append("p");
-  let text = formulaP.append("foreignObject").attr("width",100).attr("height",100)
-  text.text("$$ x = \\sum_{i \\in A} i^{2} $$")
+  let text = formulaP.append("foreignObject").attr("width",50).attr("height",50)
+  text.text(docConfig[plot_type][objFunction].value);
   MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 }
