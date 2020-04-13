@@ -44,6 +44,7 @@ class ApplicationManager {
       xini => this.setParam(paramNames.x_ini, xini),
       "#svg1"
     );
+    this.plotDoc();
   }
 
 
@@ -219,6 +220,6 @@ class ApplicationManager {
   }
 
   plotDoc() {
-    documentationFactory(this.objectiveFunction.name, this.algoParams[paramNames.algorithmName]);
+    documentationFactory(this.objectiveFunction.name, this.algoParams[paramNames.algorithmName], this.plot.getType());
   }
 }

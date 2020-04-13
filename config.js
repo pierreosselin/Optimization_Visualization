@@ -447,3 +447,29 @@ const paramsConfig = {
     },
   },
 };
+
+const docConfig = {
+  [plotTypes.plot_1D]: {
+  "square" : {name : "Square Function", value : "$$f(x) = x^{2}$$"},
+  "pow3" : {name : "Power-3 Function", value : "$$f(x) = x^{3}$$"},
+  "sin1" : {name : "Sin-Type 1 Function", value : "$$f(x) = \\sin (x) + \\sin (\\frac{10}{3} x)$$"},
+  "sin2" : {name : "Sin-Type 2 Function", value : "$$f(x) = - \\sin (2x + 1) - 2 \\sin (3x + 2) - 3 \\sin (4x + 3) - 4 \\sin (5x + 4) - 5 \\sin (6x + 5) - 6 \\sin (7x + 6)$$"},
+  "sin3" : {name : "Sin-Type 3 Function", value : "$$f(x) = -(1.4 - 3x) \\sin (18x) $$"},
+  "sin4" : {name : "Sin-Type 4 Function", value : "$$f(x) = \\sin (x) + \\sin (\\frac{10}{3}x) + \\log (x) - 0.84x  + 3$$"},
+  "sin5" : {name : "Sin-Type 5 Function", value : "$$f(x) = x \\sin (x) + x \\cos (2x)$$"},
+  },
+  [plotTypes.contour_plot]: {
+  "square" : {name : "Square Function", value : "$$f(x,y) = x^{2} + y^{2} + (x + y)^{2} $$"},
+  "saddle" : {name : "Saddle Function", value : "$$f(x,y) = x^{2} - y^{2}$$"},
+  "rosenbrock" : {name : "Rosenbrock Function", value : "$$f(x,y) = (1-x)^{2}  + 100 (y - x^{2})^{2}$$"},
+  "rastrigin" : {name : "Rastrigin Function", value : "$$f(x,y) = 20 + x^{2} + y^{2} - 10 \\cos(2 \\pi x) - 10 \\cos ( 2 \\pi y)$$"},
+  "ackley" : {name : "Ackley Function", value : "$$f(x,y) = - 20 \\exp ( -0.2 \\sqrt{0.5 \\times (x^{2} + y^{2})}) - \\exp (0.5 \\times (\\cos (2 \\pi x) + \\cos( 2 \\pi y))) + \\exp(1) + 20$$"},
+  "goldstein" : {name : "Goldstein Function", value : "$$f(x,y) = (1 + (x + y + 1)^{2} \\times (19 - 14 x + 3 x^{2} - 14 y + 6 x y + 3 y^{2})) \\times (30 + (2 x - 3 y)^{2} (18 - 32 x + 12 x^{2} + 48 y - 36 x y + 27 y^{2}))$$"},
+  "himmelblau" : {name : "Himmelblau Function", value : "$$f(x,y) = (x^{2} + y - 11)^{2} + (x + y^{2} - 7)^{2}$$"},
+  "camel" : {name : "Three-hump Camel Function", value : "$$f(x,y) = 2 x^{2} - 1.05 x^{4} + \\frac{1}{6} x^{6} + x y + y^{2}$$"},
+  "easom" : {name : "Easom Function", value : "$$f(x,y) = - \\cos (x) \\cos (y) \\exp( -((x - \\pi)^{2} + (y - \\pi)^{2}))$$"},
+  "eggholder" : {name : "Eggholder Function", value : "$$f(x,y) = -(y + 47) \\sin ( \\sqrt{ | \\frac{x}{2} + (y + 47) | } - x \\sin(\\sqrt{|x - (y + 47)|})$$"},
+  "mccormick" : {name : "McCormick Function", value : "$$f(x,y) = \\sin (x + y) + (x - y)^{2} - 1.5 x + 2.5 y + 1$$"},
+  "styblinski" : {name : "Styblinski-Tang Function", value : "$$f(x,y) = 0.5 (x^{4} - 16 x^{2} + 5 x + y^{4} - 16 y^{2} + 5 y)$$"},
+  },
+}
