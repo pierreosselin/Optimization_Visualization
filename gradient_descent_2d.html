@@ -6,7 +6,8 @@
   <link rel="stylesheet" type="text/css" href="./graph.css"  />
   <link rel="stylesheet" type="text/css" href="./buttons.css"  />
   <script src="https://d3js.org/d3.v5.min.js"></script>
-  <script src="latex.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script src="http://mlweb.loria.fr/lalolib.js"></script>
 </head>
 <body>
@@ -17,7 +18,7 @@
 
   <div id="documentation" align="center">
     <p style="color:black;font-size:50px;"> Gradient Descent Algorithm</p>
-    <div lang="latex">x_{k + 1} = x_{k} - \alpha_{k} \nabla_{x}f(x_{k})</div>
+    <p>$$x_{k + 1} = x_{k} - \alpha_{k} \nabla_{x}f(x_{k})$$</p>
   </div>
 
   <script src="gradient_descent.js"></script>
