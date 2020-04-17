@@ -478,7 +478,9 @@ const docConfigAlgorithms = {
   [algorithmNames.gradientDescent]: {name : "Gradient Descent Algorithm", value :
   "The Gradient Descent Algorithm is given by the following formula : \
   $$x_{k + 1} = x_{k} - \\alpha \\nabla_{x} f(x_{k})$$ \
-  Where \\( \\alpha \\) is called the learning rate"
+  Where \\( \\alpha \\) is called the learning rate. At every iteration, this algorithm takes a step towards the direction of the steepest descent of the function, given by the opposite of its gradient. \
+  Although it is the simplest first-order method, it is guaranteed to converge to a local minimum if the objective function is bounded below, has a Lipschitz continuous gradient, and if the step is chosen \
+  according to some criterion such as the bArmijo linesearch (not implemented for the moment)."
   },
   [algorithmNames.gradientDescentWithMomentum]: {name : "Gradient Descent Algorithm with Momentum", value :
   "The Gradient Descent Algorithm with Momentum is given by the following formula : \
