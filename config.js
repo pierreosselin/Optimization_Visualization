@@ -448,7 +448,7 @@ const paramsConfig = {
   },
 };
 
-const docConfig = {
+const docConfigFunctions = {
   [plotTypes.plot_1D]: {
   "square" : {name : "Square Function", value : "$$f(x) = x^{2}$$"},
   "pow3" : {name : "Power-3 Function", value : "$$f(x) = x^{3}$$"},
@@ -472,4 +472,55 @@ const docConfig = {
   "mccormick" : {name : "McCormick Function", value : "$$f(x,y) = \\sin (x + y) + (x - y)^{2} - 1.5 x + 2.5 y + 1$$"},
   "styblinski" : {name : "Styblinski-Tang Function", value : "$$f(x,y) = 0.5 (x^{4} - 16 x^{2} + 5 x + y^{4} - 16 y^{2} + 5 y)$$"},
   },
+}
+
+const docConfigAlgorithms = {
+  [algorithmNames.gradientDescent]: {name : "Gradient Descent Algorithm", value :
+  "The Gradient Descent Algorithm is given by the following formula : \
+  $$x_{k + 1} = x_{k} - \\alpha \\nabla_{x} f(x_{k})$$ \
+  Where \\( \\alpha \\) is called the learning rate"
+  },
+  [algorithmNames.gradientDescentWithMomentum]: {name : "Gradient Descent Algorithm with Momentum", value :
+  "The Gradient Descent Algorithm with Momentum is given by the following formula : \
+  $$x_{k + 1} = x_{k} - v_{k}$$ \
+  $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k})$$ \
+  Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
+  The momentum steers the optimizer to explore the space according to the previous gradients direction."
+  },
+  [algorithmNames.gradientDescentMomentumNesterov]: {name : "Gradient Descent Algorithm with Nesterov Momentum", value :
+  "The Gradient Descent Algorithm with Nesterov Momentum is given by the following formula : \
+  $$x_{k + 1} = x_{k} - v_{k}$$ \
+  $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k} - \\gamma v_{k-1})$$ \
+  Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
+  The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points"
+  },
+  [algorithmNames.RMSProp]: {name : "RMSProp Algorithm", value :
+  "The RMSProp Algorithm is given by the following formula : \
+  $$x_{k + 1} = x_{k} - v_{k}$$ \
+  $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k} - \\gamma v_{k-1})$$ \
+  Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
+  The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points"
+  },
+  [algorithmNames.adam]: {name : "RMSProp Algorithm", value :
+  "The RMSProp Algorithm is given by the following formula : \
+  $$x_{k + 1} = x_{k} - v_{k}$$ \
+  $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k} - \\gamma v_{k-1})$$ \
+  Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
+  The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points"
+  },
+  [algorithmNames.bfgs]: {name : "RMSProp Algorithm", value :
+  "The RMSProp Algorithm is given by the following formula : \
+  $$x_{k + 1} = x_{k} - v_{k}$$ \
+  $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k} - \\gamma v_{k-1})$$ \
+  Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
+  The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points"
+  },
+  [algorithmNames.newton]: {name : "RMSProp Algorithm", value :
+  "The RMSProp Algorithm is given by the following formula : \
+  $$x_{k + 1} = x_{k} - v_{k}$$ \
+  $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k} - \\gamma v_{k-1})$$ \
+  Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
+  The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points"
+  },
+
 }
