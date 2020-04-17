@@ -44,7 +44,8 @@ class ApplicationManager {
       xini => this.setParam(paramNames.x_ini, xini),
       "#svg1"
     );
-    this.plotDoc();
+    this.plotDoc(paramNames.objectiveFunction);
+    this.plotDoc(paramNames.algorithmName);
   }
 
 
@@ -135,7 +136,7 @@ class ApplicationManager {
       this.changeAlgorithmParams(value.name, this.objectiveFunction.name, this.objectiveFunction.value);
       this.resetParametersButtons();
       this.plotAlgoResults();
-      this.plotDoc();
+      this.plotDoc(paramName);
       return;
     }
 
@@ -156,7 +157,7 @@ class ApplicationManager {
       this.plotAlgoResults();
       this.resetParametersButtons();
       this.resetMouse();
-      this.plotDoc();
+      this.plotDoc(paramName);
       return;
     }
 
@@ -219,7 +220,12 @@ class ApplicationManager {
     }
   }
 
-  plotDoc() {
-    documentationFactory(this.objectiveFunction.name, this.algoParams[paramNames.algorithmName], this.plot.getType());
+  plotDoc(paramName) {
+    if (paramName === paramNames.objectiveFunction){
+      documentationFactory(this.objectiveFunction.name, docConfigFunctions[this.plot.getType()], "#documentationFunction");
+    }
+    if (paramName === paramNames.algorithmName){
+      documentationFactory(this.algo.name, docConfigAlgorithms, "#documentationAlgo");
+    }
   }
 }
