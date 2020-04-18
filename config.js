@@ -480,28 +480,37 @@ const docConfigAlgorithms = {
   $$x_{k + 1} = x_{k} - \\alpha \\nabla_{x} f(x_{k})$$ \
   Where \\( \\alpha \\) is called the learning rate. At every iteration, this algorithm takes a step towards the direction of the steepest descent of the function, given by the opposite of its gradient. \
   Although it is the simplest first-order method, it is guaranteed to converge to a local minimum if the objective function is bounded below, has a Lipschitz continuous gradient, and if the step is chosen \
-  according to some criterion such as the bArmijo linesearch (not implemented for the moment)."
+  according to some criterion such as the bArmijo linesearch (not implemented for the moment).",
+  link : "files/GradientDescent.PNG",
+  explain : "The algorithm only follows the steepest descent. As a result, it is vulnerable to scale inhomogeneity. In the figure, we can see that the algorithms oscilates in valleys."
   },
   [algorithmNames.gradientDescentWithMomentum]: {name : "Gradient Descent Algorithm with Momentum", value :
   "The Gradient Descent Algorithm with Momentum is given by the following formula : \
   $$x_{k + 1} = x_{k} - v_{k}$$ \
   $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k})$$ \
   Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
-  The momentum steers the optimizer to explore the space according to the previous gradients direction."
+  The momentum steers the optimizer to explore the space according to the previous gradients direction.",
+  link : "files/Momentum.PNG",
+  explain : "Adding momentum allows the algorithm to act like a \"ball\" dropped onto the loss shape, allowing to escale local minima and reach better points, as shown on the Figure."
   },
   [algorithmNames.gradientDescentMomentumNesterov]: {name : "Gradient Descent Algorithm with Nesterov Momentum", value :
   "The Gradient Descent Algorithm with Nesterov Momentum is given by the following formula : \
   $$x_{k + 1} = x_{k} - v_{k}$$ \
   $$v_{k} = \\gamma v_{k-1} + \\alpha \\nabla_{x} f(x_{k} - \\gamma v_{k-1})$$ \
   Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
-  The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points"
+  The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points",
+  link : "files/Nesterov.PNG",
+  explain : "Like Momentum, Nesterov momentum uses past velocity to steer the exploration, the difference is that Nesterov uses the information of the future direction to compoute the next step. On the Figure, the path is less chaotic than
+  a normal momentum and more directed towards the center."
   },
   [algorithmNames.RMSProp]: {name : "RMSProp Algorithm", value :
   "The RMSProp Algorithm is given by the following formula : \
   $$x_{k + 1} = x_{k} - \\frac{\\alpha}{\\sqrt{E[g^{2}]_{k} + \\epsilon}}g_{k}$$ \
   $$E[g^{2}]_{k} = \\gamma E[g^{2}]_{k-1} + (1 - \\gamma) \\nabla_{x} f(x_{k})$$ \
   Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) plays the role of the momentum for the square average, \\( \\epsilon \\) is small as to avoid dividing by zero. The elementary operations above are done element-wise.\
-  This algorithm allows to adapt the learning rate (dimension-wise) to the local \" roughness \" of the function, the locality being determined by \\( \\gamma \\) (a bigger \\( \\gamma \\) allows a more long-term memory)."
+  This algorithm allows to adapt the learning rate (dimension-wise) to the local \" roughness \" of the function, the locality being determined by \\( \\gamma \\) (a bigger \\( \\gamma \\) allows a more long-term memory).",
+  link : "files/RMSProp.PNG",
+  explain : "The learning rate adaptability "
   },
   [algorithmNames.adam]: {name : "ADAM Algorithm", value :
   "The ADAM Algorithm is given by the following formula : \
@@ -510,7 +519,8 @@ const docConfigAlgorithms = {
   $$ \\hat{m}_{k} = \\beta_{1} m_{k-1} + (1 - \\beta_{1}) \\nabla_{x} f(x_{k}) \\text{ and } \\hat{v}_{k} = \\beta_{2} v_{k-1} + (1 - \\beta_{2}) (\\nabla_{x} f(x_{k}))^{2}$$ \
   Where \\( \\alpha \\) is called the learning rate, \\( \\beta_{1} \\) and \\( \\beta_{2} \\) are the momentum of the gradient and square gradient respectively. The parameter \\( \\epsilon \\) is used to avoid dividing by zero  \
   The Adam Algorithm combine the momentum and adaptative learning rates components, which present some more desirable behaviour towards certain types of loss shapes such as flat minima. The corrected estimates of the gradient and square gradient used in the final \
-  parameter update is computed to avoid a bias of towards zero, which is all the more present at initialization"
+  parameter update is computed to avoid a bias of towards zero, which is all the more present at initialization",
+  link : "files/Adam.PNG"
   },
   [algorithmNames.bfgs]: {name : "BFGS Algorithm", value :
   "The BFGS Algorithm, from the category of the Quasi-Newton methods is given by the following formula : \
@@ -520,14 +530,16 @@ const docConfigAlgorithms = {
   \\( B_{k} \\) represents an approximation to the Hessian, the algorithm then tries to minimize the function by creating a quadratic (strictly convex) surogate model of the objective function. The computed direction  \\( B_{k}^{-1} \\nabla_{x} f(x_{k}) \\) is the optimal step according to this model \
   (if you put the learning rate to one, in four steps you reach the minimum for the square function). The \\( B_{k} \\) is updated by levering the information about the hessian embedded in the successive gradients. \
   More precisely, the BFGS update is computed as a two-rank update (preserving the property of symmetric, positive definite of \\( B_{k} \\) ) according to the secant condition: \
-  $$B_{k+1}(x_{k+1} - x_{k}) = \\nabla_{x}f(x_{k+1}) - \\nabla_{x}f(x_{k}) $$"
+  $$B_{k+1}(x_{k+1} - x_{k}) = \\nabla_{x}f(x_{k+1}) - \\nabla_{x}f(x_{k}) $$",
+  link : "files/BFGS.PNG"
   },
   [algorithmNames.newton]: {name : "Newton Algorithm", value :
   "The Newton Algorithm, a second-order method, is given by the following formula : \
   $$x_{k + 1} = x_{k} - \\alpha (\\nabla^{2}_{x} f(x_{k}))^{-1} \\nabla_{x} f(x_{k})$$ \
   Where \\( \\alpha \\) is called the learning rate. This method build a quadratic surrogate model of the objective function by computing its gradient and hessian at the current point \
   and compute its optimal step (more precisely, the location where the gradient vanishes, which is optimal iff the hessian is positive definite). One of the advantage of this method is that it is scale-invariant \
-  (it performs well in valleys). If you put the learning rate to one, you find the optimal value for the square function in one step, it would be true for the quadratic function no matter the scale inhomogeneity."
+  (it performs well in valleys). If you put the learning rate to one, you find the optimal value for the square function in one step, it would be true for the quadratic function no matter the scale inhomogeneity.",
+  link : "files/Newton.PNG"
   },
 
 }
