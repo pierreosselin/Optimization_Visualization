@@ -34,6 +34,8 @@ class AlgorithmFirstOrder extends Algorithm{
     this.x = this.x_ini.map(x => x);
     this.h = params[paramNames.h];
     this.delta = params[paramNames.delta];
+    this.beta = 0.9 // Initial Beta, button has to be implemented
+    this.flag_barmijo = params[paramNames.barmijo];
   }
 
   differentiate(arr) {
