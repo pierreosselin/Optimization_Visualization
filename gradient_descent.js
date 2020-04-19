@@ -14,8 +14,10 @@ class Algorithm {
     this.path = [];
   }
 
-  one_step(){}
+  compute_direction(){}
 
+  one_step(){}
+  one_step_armijo(){}
   optimize(){}
 
   getPath = () => this.path;
@@ -34,7 +36,8 @@ class AlgorithmFirstOrder extends Algorithm{
     this.x = this.x_ini.map(x => x);
     this.h = params[paramNames.h];
     this.delta = params[paramNames.delta];
-    this.beta = 0.9 // Initial Beta, button has to be implemented
+    this.beta = 0.1; // Initial Beta, button has to be implemented
+    this.tau = 0.9;
     this.flag_barmijo = params[paramNames.barmijo];
   }
 
@@ -55,6 +58,14 @@ class AlgorithmFirstOrder extends Algorithm{
   optimize(){
     let norm = 0;
     let steps = 0;
+    if (this.flag_barmijo){
+      do {
+        this.path.push(this.x.map(x => x));
+        norm = (this.one_step_armijo())**(1/2);
+        steps = steps + 1;
+      } while (norm > this.params[paramNames.normLim] && steps < this.params[paramNames.nlim]);
+      return this.path;
+    }
     do {
       this.path.push(this.x.map(x => x));
       norm = (this.one_step())**(1/2);
@@ -116,19 +127,31 @@ class AlgorithmSecondOrder extends AlgorithmFirstOrder{
 
 /** Simple Gradient Descent algorithm must do the following task
 * @method one_step : One step towards the opposite of the gradient
+* @method compute_direction : Compute the descent direction
 */
 class GradientDescent extends AlgorithmFirstOrder{
   constructor(params) {
     super(algorithmNames.gradientDescent, params);
   }
 
+  compute_direction() {
+    this.gradient = this.differentiate(this.x);
+    return this.gradient.reduce((a,b) => a + b**2, 0);
+  }
+
   one_step() {
-    const gradient = this.differentiate(this.x);
-    let norm = 0;
-    for (let i = 0, len = gradient.length; i < len; i++) {
-      this.x[i] = this.x[i] - this.delta * gradient[i];
-      norm = norm + gradient[i] ** 2
+    let norm = this.compute_direction();
+    this.x = this.x.map((x, i) => x - this.delta * this.gradient[i])
+    return norm
+  }
+
+  one_step_armijo() {
+    let norm = this.compute_direction();
+    let current_delta = this.delta;
+    while (this.objective(this.x.map((x, i) => x - current_delta * this.gradient[i])) > this.objective(this.x) - this.beta * current_delta * norm) {
+      current_delta = this.tau * current_delta;
     }
+    this.x = this.x.map((x, i) => x - current_delta * this.gradient[i])
     return norm
   }
 }
