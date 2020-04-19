@@ -3,6 +3,7 @@
  */
 class ApplicationManager {
   constructor(plot) {
+
     this.plot = plot;
 
     const plotType = plot.getType();
@@ -222,10 +223,10 @@ class ApplicationManager {
 
   plotDoc(paramName) {
     if (paramName === paramNames.objectiveFunction){
-      documentationFactory(this.objectiveFunction.name, docConfigFunctions[this.plot.getType()], "#documentationFunction");
+      documentationFactoryFunction(this.objectiveFunction.name, docConfigFunctions[this.plot.getType()], "#documentationFunction");
     }
     if (paramName === paramNames.algorithmName){
-      documentationFactory(this.algo.name, docConfigAlgorithms, "#documentationAlgo");
+      documentationFactoryAlgo(this.algo.name, docConfigAlgorithms, "#documentationAlgo");
     }
   }
 }
