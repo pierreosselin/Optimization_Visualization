@@ -500,7 +500,7 @@ const docConfigAlgorithms = {
   Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) is the momentum. \
   The intuition behind Nesterov Momentum, is to look \" one step ahead \" according to our estimate of the next point, and carry out a correction with the comupted gradient at this points",
   link : "files/Nesterov.PNG",
-  explain : "Like Momentum, Nesterov momentum uses past velocity to steer the exploration, the difference is that Nesterov uses the information of the future direction to compoute the next step. On the Figure, the path is less chaotic than
+  explain : "Like Momentum, Nesterov momentum uses past velocity to steer the exploration, the difference is that Nesterov uses the information of the future direction to compoute the next step. On the Figure, the path is less chaotic than \
   a normal momentum and more directed towards the center."
   },
   [algorithmNames.RMSProp]: {name : "RMSProp Algorithm", value :
@@ -510,7 +510,7 @@ const docConfigAlgorithms = {
   Where \\( \\alpha \\) is called the learning rate and \\( \\gamma \\) plays the role of the momentum for the square average, \\( \\epsilon \\) is small as to avoid dividing by zero. The elementary operations above are done element-wise.\
   This algorithm allows to adapt the learning rate (dimension-wise) to the local \" roughness \" of the function, the locality being determined by \\( \\gamma \\) (a bigger \\( \\gamma \\) allows a more long-term memory).",
   link : "files/RMSProp.PNG",
-  explain : "The learning rate adaptability "
+  explain : "The learning rate adaptability allows the algorithm to adapt the step of descent according to the sharpness of the loss shape a priori."
   },
   [algorithmNames.adam]: {name : "ADAM Algorithm", value :
   "The ADAM Algorithm is given by the following formula : \
@@ -520,7 +520,8 @@ const docConfigAlgorithms = {
   Where \\( \\alpha \\) is called the learning rate, \\( \\beta_{1} \\) and \\( \\beta_{2} \\) are the momentum of the gradient and square gradient respectively. The parameter \\( \\epsilon \\) is used to avoid dividing by zero  \
   The Adam Algorithm combine the momentum and adaptative learning rates components, which present some more desirable behaviour towards certain types of loss shapes such as flat minima. The corrected estimates of the gradient and square gradient used in the final \
   parameter update is computed to avoid a bias of towards zero, which is all the more present at initialization",
-  link : "files/Adam.PNG"
+  link : "files/Adam.PNG",
+  explain : "In the Adam Algorithm both the learning rate adaptability and momentum are leveraged to steer the exploration direction."
   },
   [algorithmNames.bfgs]: {name : "BFGS Algorithm", value :
   "The BFGS Algorithm, from the category of the Quasi-Newton methods is given by the following formula : \
@@ -531,15 +532,17 @@ const docConfigAlgorithms = {
   (if you put the learning rate to one, in four steps you reach the minimum for the square function). The \\( B_{k} \\) is updated by levering the information about the hessian embedded in the successive gradients. \
   More precisely, the BFGS update is computed as a two-rank update (preserving the property of symmetric, positive definite of \\( B_{k} \\) ) according to the secant condition: \
   $$B_{k+1}(x_{k+1} - x_{k}) = \\nabla_{x}f(x_{k+1}) - \\nabla_{x}f(x_{k}) $$",
-  link : "files/BFGS.PNG"
+  link : "files/BFGS.PNG",
+  explain : "The BFGS algorithm combined a gradient descent-like behaviour at the beginning with a constant update of an estimate of the local hessian, which allows to better direct the exploration, and cope with scale inhomogeneity near a valley. In our figure, \
+  the Hessian is fully learned in four steps for a quadratic function, allowing the algorithm to directly infer the minimum."
   },
   [algorithmNames.newton]: {name : "Newton Algorithm", value :
   "The Newton Algorithm, a second-order method, is given by the following formula : \
   $$x_{k + 1} = x_{k} - \\alpha (\\nabla^{2}_{x} f(x_{k}))^{-1} \\nabla_{x} f(x_{k})$$ \
-  Where \\( \\alpha \\) is called the learning rate. This method build a quadratic surrogate model of the objective function by computing its gradient and hessian at the current point \
+  Where \\( \\alpha \\) is called the learning rate and \\( \\epsilon \\) is the minimum value assigned to the smallest eigenvalue in order to deal with a definite positive matrix. This method build a quadratic surrogate model of the objective function by computing its gradient and hessian at the current point \
   and compute its optimal step (more precisely, the location where the gradient vanishes, which is optimal iff the hessian is positive definite). One of the advantage of this method is that it is scale-invariant \
   (it performs well in valleys). If you put the learning rate to one, you find the optimal value for the square function in one step, it would be true for the quadratic function no matter the scale inhomogeneity.",
-  link : "files/Newton.PNG"
+  link : "files/Newton.PNG",
+  explain : "The Newton Algorithm applies a minimization of a second order surrogate model to the objective function, this model being defined by the local shape of the objective function. In our figure the square function is directly infered and the minimization is done in one step."
   },
-
 }

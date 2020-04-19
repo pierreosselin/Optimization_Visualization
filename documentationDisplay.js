@@ -18,6 +18,8 @@ function documentationFactoryAlgo(paramName, doc, containerId) {
   let text = formulaP.append("foreignObject").attr("width",50).attr("height",50)
   text.text(doc[paramName].value);
   d3.select(containerId).append('img').attr("src", doc[paramName].link).attr("class", "svg-content-responsive-algo")
+  let formulaExplaination = div.append("p");
+  let textExplaination = formulaExplaination.append("foreignObject").attr("width",50).attr("height",50)
+  textExplaination.text(doc[paramName].explain);
   MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
 }
