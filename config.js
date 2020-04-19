@@ -25,6 +25,8 @@ const paramNames = {
   epsilon: "Epsilon",
   beta1 : "Beta1",
   beta2 : "Beta2",
+  beta : "Beta",
+  barmijo : "bArmijo linesearch",
   nlim: "Maximum number of iterations",
   normLim: "Norm value stopping criterion",
 
@@ -61,6 +63,7 @@ const algorithmsConfig = {
       paramNames.h,
       paramNames.nlim,
       paramNames.normLim,
+      paramNames.barmijo
     ]
   },
   [algorithmNames.gradientDescentWithMomentum]: {
@@ -73,6 +76,7 @@ const algorithmsConfig = {
       paramNames.momentum,
       paramNames.nlim,
       paramNames.normLim,
+      paramNames.barmijo
     ]
   },
   [algorithmNames.gradientDescentMomentumNesterov]: {
@@ -85,6 +89,7 @@ const algorithmsConfig = {
       paramNames.momentum,
       paramNames.nlim,
       paramNames.normLim,
+      paramNames.barmijo
     ]
   },
   [algorithmNames.RMSProp]: {
@@ -98,6 +103,7 @@ const algorithmsConfig = {
       paramNames.epsilon,
       paramNames.nlim,
       paramNames.normLim,
+      paramNames.barmijo
     ]
   },
   [algorithmNames.adam]: {
@@ -112,6 +118,7 @@ const algorithmsConfig = {
       paramNames.epsilon,
       paramNames.nlim,
       paramNames.normLim,
+      paramNames.barmijo
     ]
   },
   [algorithmNames.bfgs]: {
@@ -123,6 +130,7 @@ const algorithmsConfig = {
       paramNames.h,
       paramNames.nlim,
       paramNames.normLim,
+      paramNames.barmijo
     ]
   },
   [algorithmNames.newton]: {
@@ -135,6 +143,7 @@ const algorithmsConfig = {
       paramNames.epsilon,
       paramNames.nlim,
       paramNames.normLim,
+      paramNames.barmijo
     ]
   },
 };
@@ -444,6 +453,25 @@ const paramsConfig = {
         },
         domain: ["interpolateMagma", "interpolateYlGnBu"].map(value => ({ name: value, value })),
       }
+    },
+  },
+  [paramNames.barmijo]: {
+    input_type: inputTypes.dropdown,
+    values: {
+      [plotTypes.plot_1D]: {
+        get_init_value: () => ({ name: "Yes", value: true }),
+        domain: [
+          { name: "Yes", value: true },
+          { name: "No", value: false}
+        ]
+      },
+      [plotTypes.contour_plot]: {
+        get_init_value: () => ({ name: "No", value: false }),
+        domain: [
+          { name: "No", value: false},
+          { name: "Yes", value: true }
+        ]
+      },
     },
   },
 };

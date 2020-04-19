@@ -175,7 +175,7 @@ class ApplicationManager {
       this.plotAlgoResults();
       return;
     }
-
+    
     if (paramsConfig[paramName].input_type === inputTypes.dropdown) {
       this.algoParams[paramName] = value.value;
     } else {
@@ -194,7 +194,10 @@ class ApplicationManager {
         let initValue;
         if (param === paramNames.objectiveFunction) {
           initValue = this.objectiveFunction;
-        } else {
+        } else if (param === paramNames.barmijo) {
+          initValue = (this.algoParams[param] ? 'Yes' : 'No');
+        }
+        else {
           initValue = this.algoParams[param];
         }
         const onValueChanged = value => this.setParam(param, value);
