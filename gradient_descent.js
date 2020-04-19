@@ -187,7 +187,7 @@ class GradientDescentMomentumNesterov extends AlgorithmFirstOrder{
   }
 
   compute_direction() {
-    let x_next = this.x.map((e,i) => e - this.momentum * this.currentgrad[i]);
+    let x_next = this.x.map((e,i) => e - this.momentum * this.delta * this.direction[i]);
     this.gradient = this.differentiate(x_next);
     this.direction = this.direction.map((e,i) => this.momentum * e + this.gradient[i]);
     this.gradient = this.differentiate(this.x);
@@ -258,7 +258,7 @@ class BFGS extends AlgorithmFirstOrder{
   }
 
   compute_direction() {
-    this.direction = solve(this.currentHessian, this.gradient.map(el => -1 * el ));
+    this.direction = solve(this.currentHessian, this.gradient);
     return this.gradient.reduce((a,b) => a + b**2, 0);
   }
 
@@ -321,7 +321,7 @@ class DampedNewton extends AlgorithmSecondOrder{
       let hess = this.hessian(this.x);
       let eigval = Math.max(Math.abs(hess[0]),  this.epsilon);
       this.gradient = this.differentiate(this.x);
-      this.direction = -1 * gradient / eigval ;
+      this.direction = gradient / eigval ;
       return this.gradient.reduce((a,b) => a + b**2, 0);
     }
     let hess = array2mat(this.hessian(this.x));
@@ -331,7 +331,7 @@ class DampedNewton extends AlgorithmSecondOrder{
     eigval = eigval.map(el => Math.max(Math.abs(el), this.epsilon));
     hess = mul(eigvec, mul(diag(eigval), transpose(eigvec)));
     this.gradient = this.differentiate(this.x);
-    this.direction = solve(hess, mul(-1, gradient));
+    this.direction = solve(hess, this.gradient);
     return this.gradient.reduce((a,b) => a + b**2, 0);
   }
 }
