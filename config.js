@@ -574,3 +574,10 @@ const docConfigAlgorithms = {
   explain : "The Newton Algorithm applies a minimization of a second order surrogate model to the objective function, this model being defined by the local shape of the objective function. In our figure the square function is directly infered and the minimization is done in one step."
   },
 }
+
+const docConfigBacktracking = {
+  name : "Backtracking-Armijo Linesearch",
+  explain : "The Backtracking-Armijo linesearch is a scheme designed to find, given a descent direction, an appropriate step for the algorithm to take. This procedure is described below,\
+  given that \\(p_{k}\\) is the descent direction and \\(g_{k}\\) the gradient at \\(x_{k}\\). This procedure terminates (if the direction is a descent direction, check taylor in first order), and ensures the step taken decreases the objective function",
+  link : "files/Algorithm.PNG"
+}
