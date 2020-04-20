@@ -47,6 +47,7 @@ class ApplicationManager {
     );
     this.plotDoc(paramNames.objectiveFunction);
     this.plotDoc(paramNames.algorithmName);
+    this.plotDoc(paramNames.barmijo)
   }
 
 
@@ -175,9 +176,12 @@ class ApplicationManager {
       this.plotAlgoResults();
       return;
     }
-    
+
     if (paramsConfig[paramName].input_type === inputTypes.dropdown) {
       this.algoParams[paramName] = value.value;
+      if (paramName === paramNames.barmijo) {
+        this.plotDoc(paramName)
+      }
     } else {
       this.algoParams[paramName] = parseFloat(value);
     }
@@ -230,6 +234,9 @@ class ApplicationManager {
     }
     if (paramName === paramNames.algorithmName){
       documentationFactoryAlgo(this.algo.name, docConfigAlgorithms, "#documentationAlgo");
+    }
+    if (paramName === paramNames.barmijo){
+      documentationFactoryBarmijo(this.algoParams[paramName], docConfigBacktracking, "#documentationBacktracking");
     }
   }
 }

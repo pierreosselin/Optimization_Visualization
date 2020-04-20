@@ -40,7 +40,7 @@ class AlgorithmFirstOrder extends Algorithm{
     this.h = params[paramNames.h];
     this.delta = params[paramNames.delta];
     this.beta = 0.1; // Initial Beta, button has to be implemented
-    this.tau = 0.9;
+    this.tau = 0.75;
     this.flag_barmijo = params[paramNames.barmijo];
   }
 
@@ -258,6 +258,10 @@ class BFGS extends AlgorithmFirstOrder{
   }
 
   compute_direction() {
+    if (this.n == 1) {
+      this.direction = [this.gradient / this.currentHessian];
+      return this.gradient.reduce((a,b) => a + b**2, 0);
+    }
     this.direction = solve(this.currentHessian, this.gradient);
     return this.gradient.reduce((a,b) => a + b**2, 0);
   }
@@ -289,6 +293,7 @@ class BFGS extends AlgorithmFirstOrder{
       let secondQuantity = this.currentHessian * vector_s;
       let thirdQuantity = vector_s * secondQuantity;
       this.currentHessian = this.currentHessian + ((y_k * y_k) / firstQuantity) - secondQuantity * (secondQuantity / thirdQuantity);
+      this.x = this.x_next.map(x => x);
       this.gradient = next_gradient.map(el => el);
     } else {
       let next_gradient = this.differentiate(this.x_next);
@@ -321,7 +326,7 @@ class DampedNewton extends AlgorithmSecondOrder{
       let hess = this.hessian(this.x);
       let eigval = Math.max(Math.abs(hess[0]),  this.epsilon);
       this.gradient = this.differentiate(this.x);
-      this.direction = gradient / eigval ;
+      this.direction = [this.gradient / eigval] ;
       return this.gradient.reduce((a,b) => a + b**2, 0);
     }
     let hess = array2mat(this.hessian(this.x));
