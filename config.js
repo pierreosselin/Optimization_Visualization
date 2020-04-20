@@ -214,7 +214,7 @@ const paramsConfig = {
         get_init_value: (algorithm, objective) => ({ square: [-30, 175],
           saddle: [-0.5, 0.05],
           rosenbrock: [2.5, -1.5],
-          rastrigin: [2.5, -1.5],
+          rastrigin: [4.45, 4.5],
           ackley: [2.5, -1.5],
           goldstein: [-0.4, 1],
           himmelblau: [0, 0],
@@ -256,16 +256,16 @@ const paramsConfig = {
       [plotTypes.contour_plot]: {
         get_init_value: (algorithm, objective) => ({ square: 0.1,
           saddle: 0.1,
-          rosenbrock: 0.0001,
-          rastrigin: 0.001,
-          ackley: 0.1,
-          goldstein: 0.00001,
-          himmelblau: 0.001,
-          camel: 0.004,
+          rosenbrock: 0.001,
+          rastrigin: 1,
+          ackley: 1,
+          goldstein: 0.005,
+          himmelblau: 0.1,
+          camel: 1,
           easom: 0.001,
           eggholder: 5,
-          mccormick: 0.1,
-          styblinski: 0.05}[objective]),
+          mccormick: 1,
+          styblinski: 0.5}[objective]),
         domain: value => value > 0,
       }
     }
@@ -466,10 +466,10 @@ const paramsConfig = {
         ]
       },
       [plotTypes.contour_plot]: {
-        get_init_value: () => ({ name: "No", value: false }),
+        get_init_value: () => ({ name: "Yes", value: true }),
         domain: [
-          { name: "No", value: false},
-          { name: "Yes", value: true }
+          { name: "Yes", value: true },
+          { name: "No", value: false}
         ]
       },
     },

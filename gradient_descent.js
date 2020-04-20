@@ -40,7 +40,7 @@ class AlgorithmFirstOrder extends Algorithm{
     this.h = params[paramNames.h];
     this.delta = params[paramNames.delta];
     this.beta = 0.1; // Initial Beta, button has to be implemented
-    this.tau = 0.9;
+    this.tau = 0.75;
     this.flag_barmijo = params[paramNames.barmijo];
   }
 
